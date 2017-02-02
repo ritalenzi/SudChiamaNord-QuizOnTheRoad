@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quiz on the Road</string>
+    <string name="action_info">Info</string>
+    <string name="action_settings">Settings</string>
+    <string name="resetIMEISettings">Reset IMEI</string>
+    <string name="logoutSettings">Logout</string>
+
+    <string name="app_folder">/QuizOnTheRoad</string>
+
+    <string name="rules">VIEW RULES</string>
+    <string name="introTitle">WHAT IS IT?</string>
+    <string name="introDescription">A contest with prizes organized by the Missionary SudChiamaNord NPO. The game is a treasure hunt with stages spread all over the province of Reggio Emilia (Italy).</string>
+    <string name="startGame">Start playing</string>
+    <string name="sponsors">SPONSORS</string>
+    <string name="scnTitle">WHO ARE WE?</string>
+    <string name="scnDescription">We are an NGO, but rather we are boys and girls who, after a missionary experience in Sierra Leone, have decided to get active in order to bring the best possible help to the people who so impressed us.</string>
+    <string name="scnWebsite">VISIT OUR WEBSITE</string>
+
+    <string name="generalServerError">Impossible to communicate with the server</string>
+    <string name="yesOption">Yes</string>
+    <string name="noOption">No</string>
+
+    <string name="loginUser">User</string>
+    <string name="loginPassword">Password</string>
+    <string name="loginShowPassword">Show password</string>
+    <string name="loginButton">Login</string>
+
+    <string name="loginFailed">Impossible to login</string>
+    <string name="nullUserAndPwMsg">Specify username and password</string>
+    <string name="nullIMEIMsg">Impossible to read the device unique code</string>
+    <string name="wrongPwMsg">Wrong password</string>
+    <string name="wrongUserMsg">Wrong username</string>
+    <string name="wrongIMEIMsg">An other device is already logged in with this user. Log out on that device and try again</string>
+    <string name="noServerSession">Impossible to connect to the server - you must login again</string>
+
+    <string name="matchNotActive">The match is not active yet. It will be activated on October 25 at 2:30 pm</string>
+
+    <string name="stageNumberTxt">Stage Number</string>
+    <string name="stageLocationTxt">Location:</string>
+    <string name="stageStatusTxt">Status:</string>
+    <string name="stagesTitleLabel">STAGES</string>
+    <string name="stageLocked">Locked</string>
+    <string name="stageCurrent">Current</string>
+    <string name="stageCurrentPositionUpdateFailed">Current - failed to update the position</string>
+    <string name="stageCurrentPositionSent">Current - sent position</string>
+    <string name="stageCurrentPositionConfirmed">Current - confirmed position</string>
+    <string name="stageCurrentWrongPosition">Current - wrong position</string>
+    <string name="stageSkipped">Skipped</string>
+    <string name="stagePassed">Passed</string>
+    <string name="stageWrong">Wrong</string>
+    <string name="stagesDialogTitle">Wait</string>
+    <string name="stagesDialogExpl">Retrieving stages info…</string>
+    <string name="stagesRetrievalSuccess">Stages successfully retrieved</string>
+    <string name="stagesRetrievalError">Impossible to retrieve stages info</string>
+    <string name="stagePassedToast">This stage has already been completed</string>
+    <string name="stageLockedToast">This stage has not been unlocked yet</string>
+
+    <string name="loginDialogTitle">Wait</string>
+    <string name="loginDialogExpl">Signing in…</string>
+    <string name="loginWelcome">WELCOME!!!</string>
+    <string name="login_activity">loginActivity</string>
+
+    <string name="stageNumberTitle">STAGE NUMBER </string>
+    <string name="skipClueBtn">Skip clue</string>
+    <string name="sendMultimediaBtn">Send answer</string>
+    <string name="sendPositionBtn">Send my position</string>
+
+    <string name="skipClueConfirmationDialog">Are you sure you want to skip this clue? This cannot be undone</string>
+    <string name="skipClueDialogTitle">Wait</string>
+    <string name="skipClueDialogExpl">Sending request to skip clue…</string>
+    <string name="skipClueSucceded">Clue successfully skipped</string>
+    <string name="skipClueFailed">Impossible to skip this clue</string>
+
+    <string name="sendPositionConfirmationDialog">Are you sure you want to send your position?</string>
+    <string name="gpsDisabled">Your GPS seems to be disabled, do you want to enable it? You need it in order to play</string>
+    <string name="gpsFailed">Impossible to retrieve the GPS position</string>
+    <string name="positionCorrectlyRegistered">Position correctly registered</string>
+    <string name="positionCorrectlyUpdated">The position was correctly updated</string>
+    <string name="positionUpdateFailed">A problem occurred during the position update. Try sending it again</string>
+    <string name="checkingPosition">Wait for the position to be confirmed</string>
+    <string name="correctPosition">Yeah!! Your position is correct!!</string>
+    <string name="wrongPosition">You are in the wrong place… Try sending a different position</string>
+    <string name="posUpdateDialogTitle">Wait</string>
+    <string name="posUpdateDialogExpl">Sending position update…</string>
+
+    <string name="wrongAnswer">You cannot have access to this stage yet</string>
+
+    <string name="uploadSuccessful">File successfully uploaded</string>
+    <string name="uploadFailed">Impossible to upload the file</string>
+    <string name="fileTooBig">The file is too big to be uploaded</string>
+
+    <string name="sendPhoto">Send Photo</string>
+    <string name="photoDialogTitle">Wait</string>
+    <string name="photoDialogExpl">Uploading photo…</string>
+    <string name="photoUploadSuccess">Photo successfully uploaded</string>
+    <string name="photoUploadFailed">Failed to upload photo</string>
+    <string name="confirmPhotoUpload">Are you sure you want to upload this photo? It cannot be changed</string>
+
+    <string name="sendAudio">Send Audio</string>
+    <string name="audioDialogTitle">Wait</string>
+    <string name="audioDialogExpl">Uploading audio…</string>
+    <string name="audioUploadSuccess">Audio successfully uploaded</string>
+    <string name="audioUploadFailed">Failed to upload audio</string>
+    <string name="recordAudioButtonStart">Start recording</string>
+    <string name="recordAudioButtonStop">Stop recording</string>
+    <string name="uploadAudioButton">Upload audio</string>
+    <string name="confirmAudioUpload">Are you sure you want to upload this audio? It cannot be changed</string>
+
+    <string name="sendVideo">Send Video</string>
+    <string name="videoDialogTitle">Wait</string>
+    <string name="videoDialogExpl">Uploading video…</string>
+    <string name="videoUploadSuccess">Video successfully uploaded</string>
+    <string name="videoUploadFailed">Failed to upload video</string>
+    <string name="recordVideo">Record a new video</string>
+    <string name="uploadVideoButton">Upload video</string>
+    <string name="noVideoRecorded">Record a video first!</string>
+    <string name="errorSavingVideo">Error saving the video on the device</string>
+    <string name="confirmVideoUpload">Are you sure you want to upload this video? It cannot be changed</string>
+
+    <string name="sendText">Send Text</string>
+    <string name="textDialogTitle">Wait</string>
+    <string name="textDialogExpl">Uploading text…</string>
+    <string name="textUploadSuccess">Text successfully uploaded</string>
+    <string name="textUploadFailed">Failed to upload text</string>
+    <string name="textUploadLabel">Type your answer</string>
+    <string name="uploadText">Upload answer</string>
+    <string name="emptyText">You have not added any message!</string>
+    <string name="savingTextFailed">Impossible to send the text!</string>
+    <string name="confirmTextUpload">Are you sure you want to upload this answer? It cannot be changed</string>
+
+    <string name="playButton">Play</string>
+    <string name="stopButton">Stop</string>
+    <string name="title_activity_logout">LogoutActivity</string>
+
+    <string name="logoutDialogTitle">Wait</string>
+    <string name="logoutDialogExpl">Logging out…</string>
+    <string name="successfulLogout">Successfully logged out</string>
+    <string name="failedLogout">Failed to logout</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>

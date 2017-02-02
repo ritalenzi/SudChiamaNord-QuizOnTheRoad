@@ -1,0 +1,193 @@
+package nord.chiama.sud.caccia.activities;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.telephony.TelephonyManager;
+import android.text.method.PasswordTransformationMethod;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import nord.chiama.sud.caccia.R;
+import nord.chiama.sud.caccia.utils.RingProgressDialog;
+import nord.chiama.sud.caccia.utils.Tags;
+import nord.chiama.sud.caccia.operations.LoginOps;
+import nord.chiama.sud.caccia.utils.GenericActivity;
+
+
+public class LoginActivity extends GenericActivity<LoginOps>
+{
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
+    private EditText mUser;
+    private EditText mPassword;
+    private CheckBox mShowPw;
+    private Button mLoginBtn;
+
+    private String mSessionKey;
+//    private int mNStages = -1;
+
+    private RingProgressDialog mOpProgressDialog;
+
+
+    @Override
+    protected void onCreate (Bundle savedInstanceState)
+    {
+        setTheme (android.R.style.Theme_Holo_Light_DarkActionBar);
+        setContentView (R.layout.activity_login);
+
+        mOpProgressDialog = new RingProgressDialog (LoginActivity.this);
+
+        mUser = (EditText) findViewById (R.id.loginUser);
+        mPassword = (EditText) findViewById (R.id.loginPassword);
+        mShowPw = (CheckBox) findViewById (R.id.loginShowPassword);
+
+        mShowPw.setOnClickListener (new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v)
+            {
+                checkPasswordFormat();
+            }
+        });
+
+        mLoginBtn = (Button) findViewById (R.id.loginButton);
+
+        super.onCreate (savedInstanceState, LoginOps.class);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu)
+    {
+        getMenuInflater().inflate (R.menu.info_action, menu);
+
+        return super.onCreateOptionsMenu (menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+        Intent intent;
+        switch (item.getItemId()) {
+
+            case R.id.action_info:
+                intent = new Intent (this, InfoActivity.class);
+                startActivity (intent);
+                break;
+        }
+
+        return true;
+    }
+
+    private void checkPasswordFormat()
+    {
+        int start = mPassword.getSelectionStart();
+        int end = mPassword.getSelectionEnd();
+        if (mShowPw.isChecked()) {
+            mPassword.setTransformationMethod (null);
+        }
+        else {
+            mPassword.setTransformationMethod (new PasswordTransformationMethod());
+        }
+        mPassword.setSelection (start, end);
+    }
+
+    public void login (View view)
+    {
+        hideKeyboard (this, mUser.getWindowToken());
+        hideKeyboard (this, mPassword.getWindowToken());
+
+        String user = mUser.getText().toString();
+        String pw = mPassword.getText().toString();
+        if ((user.isEmpty()) || (pw.isEmpty())) {
+            Toast.makeText (this, getString (R.string.nullUserAndPwMsg), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        TelephonyManager tm = (TelephonyManager) getSystemService (Context.TELEPHONY_SERVICE);
+        String imei = tm.getDeviceId();
+        if (imei == null) {
+            Toast.makeText (this, getString (R.string.nullIMEIMsg), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        getOps().login (user, pw, imei);
+    }
+
+    public void hideKeyboard (Activity activity, IBinder windowToken)
+    {
+        InputMethodManager mgr = (InputMethodManager) activity.getSystemService (
+                Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow (windowToken, 0);
+    }
+
+    private void startStagesActivity()
+    {
+        Intent intent = new Intent (this, StagesActivity.class);
+        intent.putExtra (Tags.SESSION_KEY, mSessionKey);
+        startActivity (intent);
+    }
+
+    public void notifyProgressUpdate (int progress, int dialogTitle, int dialogExpl)
+    {
+        mOpProgressDialog.updateProgressDialog (progress, dialogTitle, dialogExpl);
+    }
+
+    public void notifySuccessfulLogin (String sessionKey)
+    {
+        mSessionKey = sessionKey;
+//        mNStages = nStages;
+
+        if (sessionKey == null) {
+            String toastMsg = LoginActivity.this.getString (R.string.loginFailed);
+            Toast.makeText (this, toastMsg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+//        int rowDeleted = getContentResolver().delete (StageEntry.CONTENT_URI, null, null);
+//        Log.i (TAG, "Deleted " + rowDeleted + " from the database");
+//        ContentValues[] cvArray = new ContentValues[5];
+//        String idCurrentClue = null;
+//        for (int i=0; i<5; i++) {
+//            ContentValues cv = new ContentValues();
+//            cv.put (StageEntry.COLUMN_NUMBER, i+1);
+//            if (i<2) {
+//                cv.put (StageEntry.COLUMN_STATUS, StageStatus.passed.name());
+//                cv.put (StageEntry.COLUMN_CLUE, "This is the clue for the passed step\nGOOD LUCK!!");
+//                cv.put (StageEntry.COLUMN_TEST, StageTest.text.name());
+//            }
+//            else if (i==2) {
+//                cv.put (StageEntry.COLUMN_STATUS, StageStatus.current.name());
+//                cv.put (StageEntry.COLUMN_CLUE, "This is the clue for the third step\nGOOD LUCK!!");
+//                cv.put (StageEntry.COLUMN_TEST, StageTest.text.name());
+//                idCurrentClue = String.valueOf (2);
+//            }
+//            else {
+//                cv.put (StageEntry.COLUMN_STATUS, StageStatus.locked.name());
+//                cv.put (StageEntry.COLUMN_CLUE, "This is the clue for the locked step\nGOOD LUCK!!");
+//                cv.put (StageEntry.COLUMN_TEST, StageTest.audio.name());
+//            }
+//            cv.put (StageEntry.COLUMN_CORRECT_POSITION, 0);
+//
+//            cvArray[i] = cv;
+//        }
+//        getContentResolver().bulkInsert (StageEntry.CONTENT_URI, cvArray);
+
+//        startStagesActivity (idCurrentClue);
+        startStagesActivity();
+    }
+
+    public void notifyFailedLogin (int error)
+    {
+        String toastMsg = getString (R.string.loginFailed) + ": " + getString (error);
+        Toast.makeText (this, toastMsg, Toast.LENGTH_SHORT).show();
+    }
+}

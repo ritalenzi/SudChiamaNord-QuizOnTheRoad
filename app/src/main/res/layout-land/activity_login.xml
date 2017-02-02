@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/logo"
+        android:layout_below="@+id/loginUser"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/loginUser"
+        android:hint="@string/loginUser"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/loginPassword"
+        android:layout_below="@+id/loginUser"
+        android:layout_alignLeft="@+id/loginUser"
+        android:layout_alignStart="@+id/loginUser"
+        android:layout_marginTop="25dp"
+        android:hint="@string/loginPassword" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginShowPassword"
+        android:id="@+id/loginShowPassword"
+        android:layout_below="@+id/loginPassword"
+        android:layout_alignLeft="@+id/loginPassword"
+        android:layout_alignStart="@+id/loginPassword" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginButton"
+        android:id="@+id/loginButton"
+        android:onClick="login"
+        android:layout_below="@+id/loginShowPassword"
+        android:layout_alignRight="@+id/loginShowPassword"
+        android:layout_alignEnd="@+id/loginShowPassword"
+        android:layout_marginTop="31dp" />
+
+</RelativeLayout>
