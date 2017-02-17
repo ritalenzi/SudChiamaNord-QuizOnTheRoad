@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QuizOnTheRoad</string>
+    <string name="action_info">Info</string>
+    <string name="action_settings">Settings</string>
+    <string name="resetIMEISettings">Reset IMEI</string>
+    <string name="logoutSettings">Logout</string>
+
+    <string name="app_folder">/QuizOnTheRoad</string>
+
+    <string name="rules">REGOLAMENTO</string>
+    <string name="introTitle">CHE COS\'E\'?</string>
+    <string name="introDescription">Quiz on the Road &#232; una gara a premi organizzata dall\'Associazione Missionaria SudChiamaNord ONLUS. Il gioco &#232; simile ad una caccia al tesoro da svolgere in auto per raggiungere alcuni luoghi della provincia di Reggio Emilia.</string>
+    <string name="startGame">Inizia a giocare</string>
+    <string name="sponsors">SPONSORS</string>
+    <string name="scnTitle">CHI SIAMO?</string>
+    <string name="scnDescription">Siamo una ONLUS, ma più che altro siamo ragazzi che, dopo una esperienza missionaria in Sierra Leone, hanno deciso di organizzarsi per portare il migliore aiuto possibile a quel popolo che tanto ci ha colpito.</string>
+    <string name="scnWebsite">VISITA IL NOSTRO SITO</string>
+
+    <string name="generalServerError">Impossibile comunicare con il server</string>
+    <string name="yesOption">Si</string>
+    <string name="noOption">No</string>
+
+    <string name="loginUser">Numero di telefono</string>
+    <string name="loginPassword">Password</string>
+    <string name="loginShowPassword">Mostra password</string>
+    <string name="loginButton">Entra</string>
+
+    <string name="loginFailed">Impossibile effettuare il login</string>
+    <string name="nullUserAndPwMsg">Inserire nome utente e password</string>
+    <string name="nullIMEIMsg">Impossibile leggere il codice univoco del telefono</string>
+    <string name="wrongPwMsg">Password errata</string>
+    <string name="wrongUserMsg">Nome utente errato</string>
+    <string name="wrongIMEIMsg">Un altro dispositivo &#232; loggato con questo utente. Effettuare il logout su quel telefono e riprovare</string>
+    <string name="noServerSession">Impossibile contattare il server - &#232; necessario rieffettuare il login</string>
+
+    <string name="matchNotActive">La partita non &#232; ancora attiva. Verra\' attivata il 25 ottobre alle 14:30</string>
+
+    <string name="stageNumberTxt">Tappa Numero</string>
+    <string name="stageLocationTxt">Dove si trova:</string>
+    <string name="stageStatusTxt">Stato:</string>
+    <string name="stagesTitleLabel">TAPPE</string>
+    <string name="stageLocked">Bloccata</string>
+    <string name="stageCurrent">Corrente</string>
+    <string name="stageCurrentPositionUpdateFailed">Corrente - update della posizione fallito</string>
+    <string name="stageCurrentPositionSent">Corrente - posizione mandata</string>
+    <string name="stageCurrentPositionConfirmed">Corrente - posizione confermata</string>
+    <string name="stageCurrentWrongPosition">Corrente - posizione sbagliata</string>
+    <string name="stageSkipped">Saltata</string>
+    <string name="stagePassed">Superata</string>
+    <string name="stageWrong">Sbagliata</string>
+    <string name="stagesDialogTitle">Aspetta</string>
+    <string name="stagesDialogExpl">Recuperando info sulle tappe…</string>
+    <string name="stagesRetrievalSuccess">Correttamente scaricate le info sulle tappe</string>
+    <string name="stagesRetrievalError">Impossibile recuperare info sulle tappe</string>
+    <string name="stagePassedToast">Questa tappa &#232; gi&#224; stata superata</string>
+    <string name="stageLockedToast">Questa tappa non &#232; stata ancora sbloccata</string>
+
+    <string name="loginDialogTitle">Aspetta</string>
+    <string name="loginDialogExpl">Effettuando il login…</string>
+    <string name="loginWelcome">BENVENUTO!!!</string>
+    <string name="login_activity">loginActivity</string>
+
+    <string name="stageNumberTitle">TAPPA NUMERO </string>
+    <string name="skipClueBtn">Salta questo indizio</string>
+    <string name="sendMultimediaBtn">Manda risposta</string>
+    <string name="sendPositionBtn">Invia la mia posizione</string>
+
+    <string name="skipClueConfirmationDialog">Sei sicuro di voler saltare questo indizio? Non potrai piu\&#39; tornare indietro</string>
+    <string name="skipClueDialogTitle">Aspetta</string>
+    <string name="skipClueDialogExpl">Sto inviando la richiesta per saltare questa tappa…</string>
+    <string name="skipClueSucceded">Indizio saltato</string>
+    <string name="skipClueFailed">Impossibile saltare questo indizio</string>
+
+    <string name="sendPositionConfirmationDialog">Sei sicuro di voler inviare la tua posizione?</string>
+    <string name="gpsDisabled">Il tuo GPS sembra essere spendo, vuoi accenderlo? Ne hai bisogno per poter proseguire</string>
+    <string name="gpsFailed">Impossibile ottenere la tua posizione dal gps</string>
+    <string name="positionCorrectlyRegistered">Posizione registrata correttamente</string>
+    <string name="positionCorrectlyUpdated">La tua posizione &#232; stata aggiornata correttamente</string>
+    <string name="positionUpdateFailed">Si &#232; verificato un problema nell\&#39;aggiornamento della tua posizione. Prova di mandarla di nuovo</string>
+    <string name="checkingPosition">Aspetta che la tua posizione venga confermata</string>
+    <string name="correctPosition">Evviva!! La tua posizione &#232; corretta!!</string>
+    <string name="wrongPosition">Sei nel posto sbagliato… Invia nuovamente la posizione</string>
+    <string name="posUpdateDialogTitle">Aspetta</string>
+    <string name="posUpdateDialogExpl">Sto inviando la posizione corrente…</string>
+
+    <string name="wrongAnswer">Non puoi modificare questo indizio - non &#232; quello attuale</string>
+
+    <string name="uploadSuccessful">Il file e\&#39; stato mandato correttamente al server</string>
+    <string name="uploadFailed">Impossibile mandare il file al server</string>
+    <string name="fileTooBig">Impossibile mandare la rispsta: file troppo grande</string>
+
+    <string name="sendPhoto">Send Photo</string>
+    <string name="photoDialogTitle">Aspetta</string>
+    <string name="photoDialogExpl">Sto inviando la foto…</string>
+    <string name="photoUploadSuccess">Foto mandata con successo</string>
+    <string name="photoUploadFailed">Impossibile mandare la foto</string>
+    <string name="confirmPhotoUpload">Sei sicuro di voler mandare questa foto? Non potra\&#39; piu\&#39; essere cambiata</string>
+
+    <string name="sendAudio">Manda Audio</string>
+    <string name="audioDialogTitle">Aspetta</string>
+    <string name="audioDialogExpl">Sto inviando il file audio…</string>
+    <string name="audioUploadSuccess">File audio mandato con successo</string>
+    <string name="audioUploadFailed">Impossibile mandare il file audio</string>
+    <string name="recordAudioButtonStart">Inizia a registrare</string>
+    <string name="recordAudioButtonStop">Stop</string>
+    <string name="uploadAudioButton">Invia risposta</string>
+    <string name="confirmAudioUpload">Sei sicuro di voler mandare questo audio? Non potra\&#39; piu\&#39; essere cambiato</string>
+
+    <string name="sendVideo">Manda Video</string>
+    <string name="videoDialogTitle">Aspetta</string>
+    <string name="videoDialogExpl">Sto inviando il video…</string>
+    <string name="videoUploadSuccess">Video mandato con successo</string>
+    <string name="videoUploadFailed">Impossibile mandare il video</string>
+    <string name="recordVideo">Cattura un nuovo video</string>
+    <string name="uploadVideoButton">Invia il video</string>
+    <string name="noVideoRecorded">Nessun video creato!</string>
+    <string name="errorSavingVideo">Problema nel salvataggio del video sul telefono</string>
+    <string name="confirmVideoUpload">Sei sicuro di voler mandare questo video? Non potra\&#39; piu\&#39; essere cambiato</string>
+
+    <string name="sendText">Manda Testot</string>
+    <string name="textDialogTitle">Aspetta</string>
+    <string name="textDialogExpl">Sto inviando la risposta…</string>
+    <string name="textUploadSuccess">Testo mandato con successo</string>
+    <string name="textUploadFailed">Impossibile mandare il testo</string>
+    <string name="textUploadLabel">Inserisci la tua risposta</string>
+    <string name="uploadText">Invia risposta</string>
+    <string name="emptyText">Non hai inserito nessun messaggio!</string>
+    <string name="savingTextFailed">Impossibile mandare il messaggio!</string>
+    <string name="confirmTextUpload">Sei sicuro di voler mandare questa risposta? Non potra\&#39; piu\&#39; essere cambiata</string>
+
+    <string name="playButton">Play</string>
+    <string name="stopButton">Stop</string>
+
+    <string name="logoutDialogTitle">Aspetta</string>
+    <string name="logoutDialogExpl">Logout in corso…</string>
+    <string name="successfulLogout">Logout riuscito</string>
+    <string name="failedLogout">Impossibile effettuare il logout</string>
+    <string name="quiz_on_the_road">Quiz On The Road</string>
+
+</resources>

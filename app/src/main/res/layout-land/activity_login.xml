@@ -11,12 +11,11 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/logo"
+        android:id="@+id/imageView"
         android:src="@drawable/logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:contentDescription="@string/quiz_on_the_road" />
+        android:layout_below="@+id/loginUser"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -25,8 +24,10 @@
         android:ems="10"
         android:id="@+id/loginUser"
         android:hint="@string/loginUser"
-        android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -34,10 +35,11 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/loginPassword"
-        android:hint="@string/loginPassword"
         android:layout_below="@+id/loginUser"
         android:layout_alignLeft="@+id/loginUser"
-        android:layout_alignStart="@+id/loginUser" />
+        android:layout_alignStart="@+id/loginUser"
+        android:layout_marginTop="25dp"
+        android:hint="@string/loginPassword" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -46,19 +48,17 @@
         android:id="@+id/loginShowPassword"
         android:layout_below="@+id/loginPassword"
         android:layout_alignLeft="@+id/loginPassword"
-        android:layout_alignStart="@+id/loginPassword"
-        android:layout_marginTop="30dp"
-        android:layout_alignRight="@+id/loginPassword"
-        android:layout_alignEnd="@+id/loginPassword" />
+        android:layout_alignStart="@+id/loginPassword" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/loginButton"
         android:id="@+id/loginButton"
-        android:layout_marginTop="38dp"
+        android:onClick="login"
         android:layout_below="@+id/loginShowPassword"
-        android:layout_centerHorizontal="true"
-        android:onClick="login"/>
+        android:layout_alignRight="@+id/loginShowPassword"
+        android:layout_alignEnd="@+id/loginShowPassword"
+        android:layout_marginTop="31dp" />
 
 </RelativeLayout>
