@@ -5,6 +5,13 @@ import java.util.List;
 
 public class Tec
 {
+    // Active matches
+    private String idpar;
+    private String nomep;
+    private Integer pubbl;
+    private String timef;
+    private String timei;
+
     // Login
     private String sessionKey;
     private String usern;
@@ -20,6 +27,47 @@ public class Tec
     private Boolean gameo;
     private Integer idain;
     private List<Indizi> indizi = new ArrayList<>();
+
+
+    public String getIdpar() {
+        return idpar;
+    }
+
+    public void setIdpar(String idpar) {
+        this.idpar = idpar;
+    }
+
+    public String getNomep() {
+        return nomep;
+    }
+
+    public void setNomep(String nomep) {
+        this.nomep = nomep;
+    }
+
+    public Integer getPubbl() {
+        return pubbl;
+    }
+
+    public void setPubbl(Integer pubbl) {
+        this.pubbl = pubbl;
+    }
+
+    public String getTimef() {
+        return timef;
+    }
+
+    public void setTimef(String timef) {
+        this.timef = timef;
+    }
+
+    public String getTimei() {
+        return timei;
+    }
+
+    public void setTimei(String timei) {
+        this.timei = timei;
+    }
 
     /**
      *

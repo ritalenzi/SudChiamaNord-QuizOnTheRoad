@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import it.sudchiamanord.quizontheroad.R;
+import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
 import it.sudchiamanord.quizontheroad.operations.results.LoginResult;
 
 public class Proxy
@@ -18,6 +19,20 @@ public class Proxy
     private static final String UPLOAD_CONN_URL = "http://www.sudchiamanord.com/appcaccia/upload.php";
 
     private static final int MAX_UPLOAD_SIZE = 25000000;
+
+    public static ActiveMatchesResult doActiveMatchesRequest (boolean setDevel)
+    {
+        try {
+            ActiveMatchesProxy amProxyObj = new ActiveMatchesProxy (MANAGER_CONN_URL);
+            amProxyObj.request (setDevel);
+            return amProxyObj.getResult();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in opening the connection", e);
+        }
+
+        return new ActiveMatchesResult (R.string.wrongActiveMatchesResponse);
+    }
 
     public static LoginResult doLogin (String user, String password, String imei)
     {

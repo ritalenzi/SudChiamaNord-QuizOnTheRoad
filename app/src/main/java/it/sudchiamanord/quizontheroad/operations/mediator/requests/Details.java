@@ -14,6 +14,7 @@ public class Details
     private String rlati;
     private String rlong;
     private String accur;
+    private String devel;
 
     /**
      *
@@ -211,5 +212,23 @@ public class Details
      */
     public void setAccur(String accur) {
         this.accur = accur;
+    }
+
+    /**
+     *
+     * @return
+     * The devel
+     */
+    public String getDevel() {
+        return devel;
+    }
+
+    /**
+     *
+     * @param devel
+     * The devel
+     */
+    public void setDevel(String devel) {
+        this.devel = devel;
     }
 }

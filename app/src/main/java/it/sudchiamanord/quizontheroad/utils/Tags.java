@@ -1,6 +1,5 @@
 package it.sudchiamanord.quizontheroad.utils;
 
-
 public interface Tags
 {
     String USER = "USER";

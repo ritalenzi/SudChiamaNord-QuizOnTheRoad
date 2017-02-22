@@ -1,9 +1,11 @@
 package it.sudchiamanord.quizontheroad.operations.mediator;
 
+
 import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,17 +20,17 @@ import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.mediator.requests.Details;
 import it.sudchiamanord.quizontheroad.operations.mediator.requests.Request;
 import it.sudchiamanord.quizontheroad.operations.mediator.responses.Tec;
-import it.sudchiamanord.quizontheroad.operations.results.LoginResult;
+import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
 import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.Utils;
 
-class LoginProxy
+class ActiveMatchesProxy
 {
-    private final String TAG = LoginProxy.class.getSimpleName();
+    private final String TAG = ActiveMatchesProxy.class.getSimpleName();
 
     private HttpURLConnection httpConn;
 
-    LoginProxy(String requestURL) throws IOException
+    ActiveMatchesProxy (String requestURL) throws IOException
     {
         URL url = new URL(requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
@@ -38,20 +40,20 @@ class LoginProxy
         httpConn.setRequestProperty ("Content-Type", "application/json");
     }
 
-    void login (String user, String password, String imei) throws IOException
+    void request (boolean setDevel) throws IOException
     {
         Gson gson = new Gson();
         Details details = new Details();
-        details.setUsern (user);
-        details.setPaswd (password);
-        details.setCimei (imei);
+        if (setDevel) {
+            details.setDevel ("1");
+        }
         Request request = new Request();
-        request.setAction (Consts.Actions.login);
+        request.setAction (Consts.Actions.activeMatches);
         request.setSessionKey ("");
         request.setDetails (details);
         String dataRequest = gson.toJson (request);
         try {
-            OutputStreamWriter wr = new OutputStreamWriter(httpConn.getOutputStream());
+            OutputStreamWriter wr = new OutputStreamWriter (httpConn.getOutputStream());
             wr.write (dataRequest);
             wr.flush();
         }
@@ -61,15 +63,15 @@ class LoginProxy
         }
     }
 
-    LoginResult getLoginResult() throws IOException
+
+    ActiveMatchesResult getResult() throws IOException
     {
         int responseCode = httpConn.getResponseCode();
         Log.d (TAG, "Response Code: " + responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            InputStream is = new BufferedInputStream(httpConn.getInputStream());
+            InputStream is = new BufferedInputStream (httpConn.getInputStream());
             String response = Utils.convertStreamToString (is);
-            Log.d (TAG, "Response: " + response);   // TODO: remove
 
             is.close();
             httpConn.disconnect();
@@ -78,38 +80,32 @@ class LoginProxy
                 JSONObject jsonResponse = new JSONObject(response);
                 String num = jsonResponse.getString ("num");
                 switch (num) {
-                    case "s001":
-                        JSONObject jstec = jsonResponse.getJSONObject ("tec");
+                    case "s000":
+                        JSONArray jstecs = jsonResponse.getJSONArray ("tec");
                         Gson gson = new Gson();
-                        Tec tec = gson.fromJson(jstec.toString(), Tec.class);
-                        String sessionKey = tec.getSessionKey();
-                        String username = tec.getUsern();
-                        int idUse = tec.getIduse();
-                        String lastname = tec.getCogno();
-                        String firstname = tec.getNomeu();
-                        String birth = tec.getDatan();
-                        return new LoginResult (sessionKey, username, idUse, lastname, firstname, birth);
+                        ActiveMatchesResult result = new ActiveMatchesResult();
+                        for (int i=0; i<jstecs.length(); i++) {
+                            JSONObject jstec = jstecs.getJSONObject (i);
+                            Tec tec = gson.fromJson (jstec.toString(), Tec.class);
+                            result.addMatch (tec.getIdpar(), tec.getNomep());
+                        }
+
+                        return result;
 
                     case "e007":
-                        return new LoginResult (R.string.wrongPwMsg);
-
-                    case "e008":
-                        return new LoginResult (R.string.wrongUserMsg);
-
-                    case "e010":
-                        return new LoginResult (R.string.wrongIMEIMsg);
+                        return new ActiveMatchesResult (R.string.wrongActiveMatchesResponse);
 
                     default:
-                        throw new JSONException("Wrong num value " + num);
+                        throw new JSONException ("Wrong num value " + num);
                 }
             }
             catch (JSONException e) {
-                Log.e (TAG, "Problem in parsing the login response", e);
+                Log.e (TAG, "Problem in parsing the active matches response", e);
                 throw new IOException(e);
             }
         }
 
-        throw new IOException("Received response code " + responseCode + " instead of " +
+        throw new IOException ("Received response code " + responseCode + " instead of " +
                 HttpURLConnection.HTTP_OK);
     }
 }

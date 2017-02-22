@@ -21,6 +21,8 @@
     <string name="yesOption">Yes</string>
     <string name="noOption">No</string>
 
+    <string name="wrongActiveMatchesResponse">Impossible to retrieve the active matches</string>
+
     <string name="loginUser">User</string>
     <string name="loginPassword">Password</string>
     <string name="loginShowPassword">Show password</string>
