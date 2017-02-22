@@ -8,13 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import it.sudchiamanord.quizontheroad.R;
+import it.sudchiamanord.quizontheroad.operations.ActiveMatchesOps;
+import it.sudchiamanord.quizontheroad.utils.GenericActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends GenericActivity<ActiveMatchesOps> {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onCreate (Bundle savedInstanceState)
+    {
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
