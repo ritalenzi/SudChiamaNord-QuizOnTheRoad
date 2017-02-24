@@ -3,7 +3,9 @@ package it.sudchiamanord.quizontheroad.operations.results;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActiveMatchesResult extends GeneralResult
 {
@@ -24,16 +26,21 @@ public class ActiveMatchesResult extends GeneralResult
         mMatches.add (new Match (id, name));
     }
 
-    public List<Match> getMatches()
+    public Map<String, String> getMatchesAsMap()
     {
-        return Collections.unmodifiableList (mMatches);
+        Map<String, String> map = new HashMap<>();
+        for (Match match : mMatches) {
+            map.put (match.id, match.name);
+        }
+
+        return map;
     }
 
     private final List<Match> mMatches;
 
-    public class Match
+    private class Match
     {
-        public Match (String id, String name)
+        Match (String id, String name)
         {
             this.id = id;
             this.name = name;

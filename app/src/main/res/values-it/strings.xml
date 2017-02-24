@@ -21,7 +21,10 @@
     <string name="yesOption">Si</string>
     <string name="noOption">No</string>
 
+    <string name="activeMatchesReqDialogTitle">Aspetta</string>
+    <string name="activeMatchesReqDialogExpl">Richiedendo la lista delle partite attive</string>
     <string name="wrongActiveMatchesResponse">Impossibile ottenere la lista delle partite attive</string>
+    <string name="activeMatchesReqFailed">Impossibile ottenere la lista delle partite attive</string>
 
     <string name="loginUser">Numero di telefono</string>
     <string name="loginPassword">Password</string>

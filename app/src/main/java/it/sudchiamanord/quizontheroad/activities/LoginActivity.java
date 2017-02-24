@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-
+import android.util.Log;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.method.PasswordTransformationMethod;
@@ -17,10 +17,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.LoginOps;
 import it.sudchiamanord.quizontheroad.utils.GenericActivity;
 import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Tags;
 
 /**
  * A login screen that offers login via email/password.
@@ -64,6 +68,12 @@ public class LoginActivity extends GenericActivity<LoginOps>
         });
 
         mLoginBtn = (Button) findViewById (R.id.loginButton);
+
+        Intent intent = getIntent();
+        Map<String, String> activeMatches = (HashMap<String, String>) intent.getSerializableExtra (Tags.ACTIVE_MATCHES);
+        for (String id : activeMatches.keySet()) {
+            Log.i (TAG, id + ": " + activeMatches.get (id));
+        }
 
         super.onCreate (savedInstanceState, LoginOps.class);
     }

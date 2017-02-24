@@ -21,7 +21,10 @@
     <string name="yesOption">Yes</string>
     <string name="noOption">No</string>
 
+    <string name="activeMatchesReqDialogTitle">Wait</string>
+    <string name="activeMatchesReqDialogExpl">Requesting the list of active matches</string>
     <string name="wrongActiveMatchesResponse">Impossible to retrieve the active matches</string>
+    <string name="activeMatchesReqFailed">Impossible to obtain the list of the active matches</string>
 
     <string name="loginUser">User</string>
     <string name="loginPassword">Password</string>
@@ -141,4 +144,5 @@
     <string name="failedLogout">Failed to logout</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="quiz_on_the_road">Quiz On The Road</string>
+
 </resources>

@@ -72,6 +72,7 @@ class ActiveMatchesProxy
         if (responseCode == HttpURLConnection.HTTP_OK) {
             InputStream is = new BufferedInputStream (httpConn.getInputStream());
             String response = Utils.convertStreamToString (is);
+//            Log.i (TAG, response);
 
             is.close();
             httpConn.disconnect();

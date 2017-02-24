@@ -7,6 +7,8 @@ public interface Tags
 
     String APP_FOLDER = "APP_FOLDER";
 
+    String ACTIVE_MATCHES = "ACTIVE_MATCHES";
+
     String LOGIN_FRAGMENT = "LOGIN_FRAGMENT";
     String SEND_DATA_FRAGMENT = "SEND_DATA_FRAGMENT";
 

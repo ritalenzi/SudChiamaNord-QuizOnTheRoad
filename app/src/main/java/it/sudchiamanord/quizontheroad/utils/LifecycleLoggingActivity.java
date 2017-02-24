@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.List;
+
+import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
+
 /**
  * This abstract class extends the Activity class and overrides lifecycle
  * callbacks for logging various lifecycle events.
@@ -133,5 +137,4 @@ public abstract class LifecycleLoggingActivity extends Activity {
 		super.onDestroy();
 		Log.d(TAG, "onDestroy() - the activity is about to be destroyed");
 	}
-
 }

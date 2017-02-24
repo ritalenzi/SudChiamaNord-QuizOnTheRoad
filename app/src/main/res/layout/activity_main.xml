@@ -17,4 +17,13 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_media_play" />
 
+    <CheckBox
+        android:text="Devel Request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/devel_check_box"
+        app:layout_anchorGravity="center_vertical|center_horizontal"
+        android:layout_gravity="bottom|center_horizontal"
+        android:checked="true" />
+
 </android.support.design.widget.CoordinatorLayout>
