@@ -34,11 +34,11 @@ public class Proxy
         return new ActiveMatchesResult (R.string.wrongActiveMatchesResponse);
     }
 
-    public static LoginResult doLogin (String user, String password, String imei)
+    public static LoginResult doLogin (String user, String password, String imei, int matchId)
     {
         try {
             LoginProxy loginProxyObj = new LoginProxy (MANAGER_CONN_URL);
-            loginProxyObj.login (user, password, imei);
+            loginProxyObj.login (user, password, imei, matchId);
             return loginProxyObj.getLoginResult();
         }
         catch (IOException e) {

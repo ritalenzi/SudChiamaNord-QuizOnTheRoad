@@ -16,7 +16,7 @@ import it.sudchiamanord.quizontheroad.utils.GenericAsyncTaskOps;
 import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
 
 
-public class LoginOps implements ConfigurableOps, GenericAsyncTaskOps<String, Integer, LoginResult>
+public class LoginOps implements ConfigurableOps, GenericAsyncTaskOps<Object, Integer, LoginResult>
 {
     private final String TAG = getClass().getSimpleName();
 
@@ -27,7 +27,7 @@ public class LoginOps implements ConfigurableOps, GenericAsyncTaskOps<String, In
     private String mImei;
     private LoginResult mLoginResult = null;
 
-    private GenericAsyncTask<String, Integer, LoginResult, LoginOps> mAsyncTask;
+    private GenericAsyncTask<Object, Integer, LoginResult, LoginOps> mAsyncTask;
 
     /**
      * Default constructor that's needed by the GenericActivity framework
@@ -65,7 +65,7 @@ public class LoginOps implements ConfigurableOps, GenericAsyncTaskOps<String, In
         }
     }
 
-    public void login (String user, String password, String imei)
+    public void login (String user, String password, String imei, int matchId)
     {
         if (mAsyncTask != null) {
             mAsyncTask.cancel (true);
@@ -75,10 +75,11 @@ public class LoginOps implements ConfigurableOps, GenericAsyncTaskOps<String, In
         mPassword = password;
         mImei = imei;
 
-        String[] params = new String[3];
+        Object[] params = new Object[4];
         params[0] = user;
         params[1] = password;
         params[2] = imei;
+        params[3] = matchId;
         mAsyncTask = new GenericAsyncTask<>(this);
         mAsyncTask.execute (params);
     }
@@ -91,14 +92,14 @@ public class LoginOps implements ConfigurableOps, GenericAsyncTaskOps<String, In
     }
 
     @Override
-    public LoginResult doInBackground (String... param)
+    public LoginResult doInBackground (Object... param)
     {
         Log.i (TAG, "Started login doInBackground");
-        return Proxy.doLogin (param[0], param[1], param[2]);
+        return Proxy.doLogin ((String) param[0], (String) param[1], (String) param[2], (Integer) param[3]);
     }
 
     @Override
-    public void onPostExecute (LoginResult loginResult, String... param)
+    public void onPostExecute (LoginResult loginResult, Object... param)
     {
         mLoginResult = loginResult;
         publishProgress (RingProgressDialog.OPERATION_COMPLETED);

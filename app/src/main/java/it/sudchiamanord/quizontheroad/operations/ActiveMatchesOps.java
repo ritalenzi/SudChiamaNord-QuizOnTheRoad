@@ -49,7 +49,7 @@ public class ActiveMatchesOps implements ConfigurableOps, GenericAsyncTaskOps<Bo
         if (mAMResult != null) {
             publishProgress (RingProgressDialog.OPERATION_COMPLETED);
             if (mAMResult.isSuccessful()) {
-                mActivity.get().notifySuccess (mAMResult.getMatchesAsMap());
+                mActivity.get().notifySuccess (mAMResult.getMatches());
             }
             else {
                 mActivity.get().notifyFail (mAMResult.getMessage());

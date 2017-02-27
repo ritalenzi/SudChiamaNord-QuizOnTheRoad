@@ -21,32 +21,27 @@ public class ActiveMatchesResult extends GeneralResult
         mMatches = new ArrayList<>();
     }
 
-    public void addMatch (String id, String name)
+    public void addMatch (int id, String name)
     {
         mMatches.add (new Match (id, name));
     }
 
-    public Map<String, String> getMatchesAsMap()
+    public List<Match> getMatches()
     {
-        Map<String, String> map = new HashMap<>();
-        for (Match match : mMatches) {
-            map.put (match.id, match.name);
-        }
-
-        return map;
+        return Collections.unmodifiableList (mMatches);
     }
 
     private final List<Match> mMatches;
 
-    private class Match
+    public class Match
     {
-        Match (String id, String name)
+        Match (int id, String name)
         {
             this.id = id;
             this.name = name;
         }
 
-        public final String id;
+        public final Integer id;
         public final String name;
     }
 }

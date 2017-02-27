@@ -38,13 +38,14 @@ class LoginProxy
         httpConn.setRequestProperty ("Content-Type", "application/json");
     }
 
-    void login (String user, String password, String imei) throws IOException
+    void login (String user, String password, String imei, int matchId) throws IOException
     {
         Gson gson = new Gson();
         Details details = new Details();
         details.setUsern (user);
         details.setPaswd (password);
         details.setCimei (imei);
+        details.setIdpar (matchId);
         Request request = new Request();
         request.setAction (Consts.Actions.login);
         request.setSessionKey ("");

@@ -9,10 +9,12 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.ActiveMatchesOps;
+import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
 import it.sudchiamanord.quizontheroad.utils.GenericActivity;
 import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
 import it.sudchiamanord.quizontheroad.utils.Tags;
@@ -45,13 +47,17 @@ public class MainActivity extends GenericActivity<ActiveMatchesOps>
         mOpProgressDialog.updateProgressDialog (progress, dialogTitle, dialogExpl);
     }
 
-    public void notifySuccess (Map<String, String> activeMatches)
+    public void notifySuccess (List<ActiveMatchesResult.Match> activeMatches)
     {
 //        for (String id : activeMatches.keySet()) {
 //            Log.i (TAG, id + ": " + activeMatches.get (id));
 //        }
+        HashMap<String, Integer> map = new HashMap<>();
+        for (ActiveMatchesResult.Match match : activeMatches) {
+            map.put (match.name, match.id);
+        }
         Intent intent = new Intent (this, LoginActivity.class);
-        intent.putExtra (Tags.ACTIVE_MATCHES, (HashMap) activeMatches);
+        intent.putExtra (Tags.ACTIVE_MATCHES, map);
         startActivity (intent);
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 public class Tec
 {
     // Active matches
-    private String idpar;
+    private Integer idpar;
     private String nomep;
     private Integer pubbl;
     private String timef;
@@ -29,11 +29,11 @@ public class Tec
     private List<Indizi> indizi = new ArrayList<>();
 
 
-    public String getIdpar() {
+    public Integer getIdpar() {
         return idpar;
     }
 
-    public void setIdpar(String idpar) {
+    public void setIdpar(Integer idpar) {
         this.idpar = idpar;
     }
 

@@ -12,12 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.sudchiamanord.quizontheroad.R;
@@ -41,8 +46,10 @@ public class LoginActivity extends GenericActivity<LoginOps>
     private EditText mPassword;
     private CheckBox mShowPw;
     private Button mLoginBtn;
+    private Spinner mActiveMatchesSpinner;
 
     private String mSessionKey;
+    private Map<String, Integer> mActiveMatches; // key: match name, value: match id
 //    private int mNStages = -1;
 
     private RingProgressDialog mOpProgressDialog;
@@ -70,10 +77,17 @@ public class LoginActivity extends GenericActivity<LoginOps>
         mLoginBtn = (Button) findViewById (R.id.loginButton);
 
         Intent intent = getIntent();
-        Map<String, String> activeMatches = (HashMap<String, String>) intent.getSerializableExtra (Tags.ACTIVE_MATCHES);
-        for (String id : activeMatches.keySet()) {
-            Log.i (TAG, id + ": " + activeMatches.get (id));
-        }
+        mActiveMatches = (HashMap<String, Integer>) intent.getSerializableExtra (Tags.ACTIVE_MATCHES);
+
+        List<String> spinnerLabels = new ArrayList<>();
+        spinnerLabels.add (getString (R.string.selectMatchSpinnerLabel));
+        spinnerLabels.addAll (mActiveMatches.keySet());
+        ArrayAdapter<String> adapter = new ArrayAdapter<> (this,
+                android.R.layout.simple_spinner_item, spinnerLabels);
+
+        adapter.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
+        mActiveMatchesSpinner = (Spinner) findViewById (R.id.activeMatchesList);
+        mActiveMatchesSpinner.setAdapter (adapter);
 
         super.onCreate (savedInstanceState, LoginOps.class);
     }
@@ -126,6 +140,21 @@ public class LoginActivity extends GenericActivity<LoginOps>
             return;
         }
 
+        int matchId;
+        if ((mActiveMatchesSpinner.getSelectedItem() == null) ||
+                (mActiveMatchesSpinner.getSelectedItemPosition() == 0)) {
+            Toast.makeText (this, R.string.selectMatchMsg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String selected = mActiveMatchesSpinner.getSelectedItem().toString();
+        if (!mActiveMatches.containsKey (selected)) {
+            Toast.makeText (this, R.string.selectMatchFailedMsg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        matchId = mActiveMatches.get (selected);
+
+
         TelephonyManager tm = (TelephonyManager) getSystemService (Context.TELEPHONY_SERVICE);
         String imei = tm.getDeviceId();
         if (imei == null) {
@@ -133,7 +162,7 @@ public class LoginActivity extends GenericActivity<LoginOps>
             return;
         }
 
-        getOps().login (user, pw, imei);
+        getOps().login (user, pw, imei, matchId);
     }
 
     public void hideKeyboard (Activity activity, IBinder windowToken)
