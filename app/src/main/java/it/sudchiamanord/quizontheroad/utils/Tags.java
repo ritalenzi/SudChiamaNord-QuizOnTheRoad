@@ -7,6 +7,8 @@ public interface Tags
 
     String APP_FOLDER = "APP_FOLDER";
 
+    int READ_PHONE_STATE_PERMISSION_REQUEST = 1;
+
     String ACTIVE_MATCHES = "ACTIVE_MATCHES";
 
     String LOGIN_FRAGMENT = "LOGIN_FRAGMENT";

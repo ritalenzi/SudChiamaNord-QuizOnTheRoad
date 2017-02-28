@@ -1,10 +1,13 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
-import android.util.Log;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.method.PasswordTransformationMethod;
@@ -20,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,6 +135,36 @@ public class LoginActivity extends GenericActivity<LoginOps>
         hideKeyboard (this, mUser.getWindowToken());
         hideKeyboard (this, mPassword.getWindowToken());
 
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_PHONE_STATE},
+                    Tags.READ_PHONE_STATE_PERMISSION_REQUEST);
+            return;
+        }
+
+        login();
+    }
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.READ_PHONE_STATE_PERMISSION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    login();
+                }
+                else {
+                    Toast.makeText (this, R.string.readPhoneStatePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    private void login()
+    {
         String user = mUser.getText().toString();
         String pw = mPassword.getText().toString();
         if ((user.isEmpty()) || (pw.isEmpty())) {

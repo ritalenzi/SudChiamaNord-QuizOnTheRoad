@@ -34,6 +34,8 @@
     <string name="loginShowPassword">Mostra password</string>
     <string name="loginButton">Entra</string>
 
+    <string name="readPhoneStatePermissionDenied">Impossibile effettare il login (e quindi giocare) senza fornire i permessi per accedere allo stato del telefono</string>
+
     <string name="loginFailed">Impossibile effettuare il login</string>
     <string name="nullUserAndPwMsg">Inserire nome utente e password</string>
     <string name="nullIMEIMsg">Impossibile leggere il codice univoco del telefono</string>
