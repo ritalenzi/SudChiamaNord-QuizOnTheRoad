@@ -25,7 +25,7 @@
     <string name="activeMatchesReqDialogExpl">Requesting the list of active matches</string>
     <string name="wrongActiveMatchesResponse">Impossible to retrieve the active matches</string>
     <string name="activeMatchesReqFailed">Impossible to obtain the list of the active matches</string>
-    <string name="selectMatchSpinnerLabel">-- seleziona la partita --</string>
+    <string name="selectMatchSpinnerLabel">-- select the match --</string>
     <string name="selectMatchMsg">Select an active match</string>
     <string name="selectMatchFailedMsg">Impossible to find the active match</string>
 
