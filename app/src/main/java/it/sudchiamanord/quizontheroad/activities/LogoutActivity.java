@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.LogoutOps;
+import it.sudchiamanord.quizontheroad.services.PositionSenderService;
 import it.sudchiamanord.quizontheroad.utils.GenericActivity;
 import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
 import it.sudchiamanord.quizontheroad.utils.Tags;
@@ -50,6 +51,6 @@ public class LogoutActivity extends GenericActivity<LogoutOps>
     {
         Toast.makeText (this, message, Toast.LENGTH_SHORT).show();
         PositionSenderService.terminate();
-        startActivity (new Intent(this, LoginActivity.class));
+        startActivity (new Intent (this, LoginActivity.class));
     }
 }

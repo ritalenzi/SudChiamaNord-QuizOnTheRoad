@@ -49,8 +49,8 @@ public class MainActivity extends GenericActivity<ActiveMatchesOps>
 
     public void notifySuccess (List<ActiveMatchesResult.Match> activeMatches)
     {
-//        for (String id : activeMatches.keySet()) {
-//            Log.i (TAG, id + ": " + activeMatches.get (id));
+//        for (String id : setActiveMatches.keySet()) {
+//            Log.i (TAG, id + ": " + setActiveMatches.get (id));
 //        }
         HashMap<String, Integer> map = new HashMap<>();
         for (ActiveMatchesResult.Match match : activeMatches) {

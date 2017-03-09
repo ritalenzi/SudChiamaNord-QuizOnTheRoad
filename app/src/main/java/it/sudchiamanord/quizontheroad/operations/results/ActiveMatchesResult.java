@@ -28,6 +28,10 @@ public class ActiveMatchesResult extends GeneralResult
 
     public List<Match> getMatches()
     {
+        if (mMatches == null) {
+            return Collections.unmodifiableList (new ArrayList<Match>());
+        }
+
         return Collections.unmodifiableList (mMatches);
     }
 

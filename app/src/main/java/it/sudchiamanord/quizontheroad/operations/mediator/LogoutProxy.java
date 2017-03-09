@@ -1,11 +1,9 @@
 package it.sudchiamanord.quizontheroad.operations.mediator;
 
-
 import android.util.Log;
 
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,20 +15,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import it.sudchiamanord.quizontheroad.R;
-import it.sudchiamanord.quizontheroad.operations.mediator.requests.Details;
 import it.sudchiamanord.quizontheroad.operations.mediator.requests.Request;
-import it.sudchiamanord.quizontheroad.operations.mediator.responses.Tec;
-import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
+import it.sudchiamanord.quizontheroad.operations.results.LogoutResult;
 import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.Utils;
 
-class ActiveMatchesProxy
+class LogoutProxy
 {
-    private final String TAG = ActiveMatchesProxy.class.getSimpleName();
+    private final String TAG = LogoutProxy.class.getSimpleName();
 
     private HttpURLConnection httpConn;
 
-    ActiveMatchesProxy (String requestURL) throws IOException
+    LogoutProxy (String requestURL) throws IOException
     {
         URL url = new URL(requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
@@ -40,17 +36,12 @@ class ActiveMatchesProxy
         httpConn.setRequestProperty ("Content-Type", "application/json");
     }
 
-    void request (boolean setDevel) throws IOException
+    void logout (String sessionKey) throws IOException
     {
         Gson gson = new Gson();
-        Details details = new Details();
-        if (setDevel) {
-            details.setDevel ("1");
-        }
         Request request = new Request();
-        request.setAction (Consts.Actions.setActiveMatches);
-        request.setSessionKey ("");
-        request.setDetails (details);
+        request.setAction (Consts.Actions.logout);
+        request.setSessionKey (sessionKey);
         String dataRequest = gson.toJson (request);
         try {
             OutputStreamWriter wr = new OutputStreamWriter (httpConn.getOutputStream());
@@ -58,21 +49,19 @@ class ActiveMatchesProxy
             wr.flush();
         }
         catch (IOException e) {
-            Log.e (TAG, "Problem in opening the connection", e);
+            Log.e(TAG, "Problem in opening the connection", e);
             throw new IOException(e);
         }
     }
 
-
-    ActiveMatchesResult getResult() throws IOException
+    LogoutResult getResponse() throws IOException
     {
         int responseCode = httpConn.getResponseCode();
-        Log.d (TAG, "Response Code: " + responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             InputStream is = new BufferedInputStream (httpConn.getInputStream());
             String response = Utils.convertStreamToString (is);
-//            Log.i (TAG, response);
+            Log.d (TAG, "Response: " + response);   // TODO: remove
 
             is.close();
             httpConn.disconnect();
@@ -81,27 +70,20 @@ class ActiveMatchesProxy
                 JSONObject jsonResponse = new JSONObject(response);
                 String num = jsonResponse.getString ("num");
                 switch (num) {
-                    case "s000":
-                        JSONArray jstecs = jsonResponse.getJSONArray ("tec");
-                        Gson gson = new Gson();
-                        ActiveMatchesResult result = new ActiveMatchesResult();
-                        for (int i=0; i<jstecs.length(); i++) {
-                            JSONObject jstec = jstecs.getJSONObject (i);
-                            Tec tec = gson.fromJson (jstec.toString(), Tec.class);
-                            result.addMatch (tec.getIdpar(), tec.getNomep());
-                        }
+                    case "s002":
+                        return new LogoutResult (true, R.string.successfulLogout, true);
 
-                        return result;
-
-                    case "e007":
-                        return new ActiveMatchesResult (R.string.wrongActiveMatchesResponse);
+                    case "e002":
+                    case "e004":
+                    case "e005":
+                        return new LogoutResult (false, R.string.failedLogout, false);
 
                     default:
                         throw new JSONException ("Wrong num value " + num);
                 }
             }
             catch (JSONException e) {
-                Log.e (TAG, "Problem in parsing the active matches response", e);
+                Log.e (TAG, "Problem in parsing the logout response", e);
                 throw new IOException(e);
             }
         }

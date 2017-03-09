@@ -6,7 +6,9 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
+import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.activities.LogoutActivity;
+import it.sudchiamanord.quizontheroad.operations.mediator.Proxy;
 import it.sudchiamanord.quizontheroad.operations.results.LogoutResult;
 import it.sudchiamanord.quizontheroad.utils.ConfigurableOps;
 import it.sudchiamanord.quizontheroad.utils.GenericAsyncTask;
@@ -75,7 +77,7 @@ public class LogoutOps implements ConfigurableOps, GenericAsyncTaskOps<String, I
     public LogoutResult doInBackground (String... param)
     {
         Log.i (TAG, "Started logout doInBackground");
-        return Proxy.doLogout(param[0]);
+        return Proxy.doLogout (param[0]);
     }
 
     @Override

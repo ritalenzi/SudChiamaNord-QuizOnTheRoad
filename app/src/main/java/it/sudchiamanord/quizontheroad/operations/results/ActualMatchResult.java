@@ -7,7 +7,7 @@ import it.sudchiamanord.quizontheroad.stage.Stage;
 
 public class ActualMatchResult extends GeneralResult
 {
-    public ActualMatchResult(boolean success, int message, boolean correctSession, List<Stage> stages)
+    public ActualMatchResult (boolean success, int message, boolean correctSession, List<Stage> stages)
     {
         super (success, message, correctSession);
         mStages = stages;

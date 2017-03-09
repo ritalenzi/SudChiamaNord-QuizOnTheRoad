@@ -9,7 +9,11 @@ import java.io.IOException;
 
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
+import it.sudchiamanord.quizontheroad.operations.results.ActualMatchResult;
 import it.sudchiamanord.quizontheroad.operations.results.LoginResult;
+import it.sudchiamanord.quizontheroad.operations.results.LogoutResult;
+import it.sudchiamanord.quizontheroad.operations.results.PositionResult;
+import it.sudchiamanord.quizontheroad.operations.results.SkipClueResult;
 
 public class Proxy
 {
@@ -87,103 +91,103 @@ public class Proxy
 //        return null;
 //    }
 
-//    public static ActualMatchResult getActualMatch (String sessionKey)
-//    {
-//        try {
-//            ActualMatchProxy amUtility = new ActualMatchProxy(MANAGER_CONN_URL);
-////            Log.d (TAG, "Session key: " + sessionKey);
-//            amUtility.request(sessionKey);
-//
-//            return amUtility.getResponse();
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "Problem in getting the actual match situation", e);
-//        }
-//
-//        return null;
-//    }
+    public static ActualMatchResult getActualMatch (String sessionKey)
+    {
+        try {
+            ActualMatchProxy amUtility = new ActualMatchProxy (MANAGER_CONN_URL);
+//            Log.d (TAG, "Session key: " + sessionKey);
+            amUtility.request (sessionKey);
 
-//    public static PositionResult sendPeriodicPositionUpdate (String sessionKey, double latitude,
-//                                                             double longitude)
-//    {
-//        try {
-//            PositionProxy positionProxy = new PositionProxy (MANAGER_CONN_URL);
-//            positionProxy.setActualPosition (sessionKey, latitude, longitude);
-//
-//            return positionProxy.getResponse();
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "Problem in sending the current position", e);
-//        }
-//
-//        return null;
-//    }
+            return amUtility.getResponse();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in getting the actual match situation", e);
+        }
 
-//    public static PositionResult sendCluePositionUpdate (String sessionKey, String serverClueId,
-//                                                         double latitude, double longitude)
-//    {
-//        try {
-//            PositionProxy positionProxy = new PositionProxy (MANAGER_CONN_URL);
-//            positionProxy.setCluePosition (sessionKey, Integer.parseInt(serverClueId), latitude,
-//                    longitude);
-//
-//            return positionProxy.getResponse();
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "Problem in sending the current position", e);
-//        }
-//
-//        return null;
-//    }
+        return null;
+    }
 
-//    public static PositionResult checkPositionUpdate (String sessionKey, String serverClueId)
-//    {
-//        try {
-//            PositionProxy positionProxy = new PositionProxy (MANAGER_CONN_URL);
-//            positionProxy.checkPosition (sessionKey, Integer.parseInt (serverClueId));
-//
-//            return positionProxy.getResponse();
-//        }
-//        catch (NumberFormatException e) {
-//            Log.e (TAG, "Impossible to convert the serverClueId to int", e);
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "Problem in sending the current position", e);
-//        }
-//
-//        return null;
-//    }
+    public static PositionResult sendPeriodicPositionUpdate (String sessionKey, double latitude,
+                                                             double longitude)
+    {
+        try {
+            PositionProxy positionProxy = new PositionProxy (MANAGER_CONN_URL);
+            positionProxy.setActualPosition (sessionKey, latitude, longitude);
 
-//    public static SkipClueResult skipClue (String sessionKey, String serverClueId)
-//    {
-//        try {
-//            SkipClueProxy skipClueProxy = new SkipClueProxy(MANAGER_CONN_URL);
-//            skipClueProxy.skipClue(sessionKey, Integer.parseInt(serverClueId));
-//
-//            return skipClueProxy.getResponse();
-//        }
-//        catch (NumberFormatException e) {
-//            Log.e (TAG, "Impossible to convert the serverClueId to int", e);
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "Problem in skipping the clue", e);
-//        }
-//
-//        return null;
-//    }
+            return positionProxy.getResponse();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in sending the current position", e);
+        }
 
-//    public static LogoutResult doLogout (String sessionKey)
-//    {
-//        try {
-//            LogoutProxy logoutProxy = new LogoutProxy(MANAGER_CONN_URL);
-//            logoutProxy.logout (sessionKey);
-//
-//            return logoutProxy.getResponse();
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "Problem in logging out", e);
-//        }
-//
-//        return null;
-//    }
+        return null;
+    }
+
+    public static PositionResult sendCluePositionUpdate (String sessionKey, String serverClueId,
+                                                         double latitude, double longitude)
+    {
+        try {
+            PositionProxy positionProxy = new PositionProxy (MANAGER_CONN_URL);
+            positionProxy.setCluePosition (sessionKey, Integer.parseInt (serverClueId), latitude,
+                    longitude);
+
+            return positionProxy.getResponse();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in sending the current position", e);
+        }
+
+        return null;
+    }
+
+    public static PositionResult checkPositionUpdate (String sessionKey, String serverClueId)
+    {
+        try {
+            PositionProxy positionProxy = new PositionProxy (MANAGER_CONN_URL);
+            positionProxy.checkPosition (sessionKey, Integer.parseInt (serverClueId));
+
+            return positionProxy.getResponse();
+        }
+        catch (NumberFormatException e) {
+            Log.e (TAG, "Impossible to convert the serverClueId to int", e);
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in sending the current position", e);
+        }
+
+        return null;
+    }
+
+    public static SkipClueResult skipClue (String sessionKey, String serverClueId)
+    {
+        try {
+            SkipClueProxy skipClueProxy = new SkipClueProxy (MANAGER_CONN_URL);
+            skipClueProxy.skipClue (sessionKey, Integer.parseInt(serverClueId));
+
+            return skipClueProxy.getResponse();
+        }
+        catch (NumberFormatException e) {
+            Log.e (TAG, "Impossible to convert the serverClueId to int", e);
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in skipping the clue", e);
+        }
+
+        return null;
+    }
+
+    public static LogoutResult doLogout (String sessionKey)
+    {
+        try {
+            LogoutProxy logoutProxy = new LogoutProxy (MANAGER_CONN_URL);
+            logoutProxy.logout (sessionKey);
+
+            return logoutProxy.getResponse();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Problem in logging out", e);
+        }
+
+        return null;
+    }
 }

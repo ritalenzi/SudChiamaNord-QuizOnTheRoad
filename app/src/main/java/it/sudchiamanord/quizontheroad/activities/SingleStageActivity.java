@@ -14,19 +14,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import nord.chiama.sud.caccia.R;
-import nord.chiama.sud.caccia.operations.SingleStageOps;
-import nord.chiama.sud.caccia.operations.results.PositionResult;
-import nord.chiama.sud.caccia.operations.results.SkipClueResult;
-import nord.chiama.sud.caccia.services.CheckPositionService;
-import nord.chiama.sud.caccia.stage.Status;
-import nord.chiama.sud.caccia.stage.Test;
-import nord.chiama.sud.caccia.utils.GPSClient;
-import nord.chiama.sud.caccia.utils.GenericActivity;
-import nord.chiama.sud.caccia.utils.IntentIds;
-import nord.chiama.sud.caccia.utils.RingProgressDialog;
-import nord.chiama.sud.caccia.utils.Tags;
-import nord.chiama.sud.caccia.utils.Utils;
+import it.sudchiamanord.quizontheroad.R;
+import it.sudchiamanord.quizontheroad.operations.SingleStageOps;
+import it.sudchiamanord.quizontheroad.operations.results.PositionResult;
+import it.sudchiamanord.quizontheroad.operations.results.SkipClueResult;
+import it.sudchiamanord.quizontheroad.services.CheckPositionService;
+import it.sudchiamanord.quizontheroad.stage.Status;
+import it.sudchiamanord.quizontheroad.stage.Test;
+import it.sudchiamanord.quizontheroad.utils.GPSClient;
+import it.sudchiamanord.quizontheroad.utils.GenericActivity;
+import it.sudchiamanord.quizontheroad.utils.IntentIds;
+import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Tags;
+import it.sudchiamanord.quizontheroad.utils.Utils;
 
 public class SingleStageActivity extends GenericActivity<SingleStageOps>
 {
@@ -248,7 +248,7 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
             return;
         }
 
-        Intent serviceIntent = new Intent(this, CheckPositionService.class);
+        Intent serviceIntent = new Intent (this, CheckPositionService.class);
         serviceIntent.putExtra (Tags.SESSION_KEY, mSessionKey);
         serviceIntent.putExtra (Tags.ID_IND, mIdInd);
         startService (serviceIntent);

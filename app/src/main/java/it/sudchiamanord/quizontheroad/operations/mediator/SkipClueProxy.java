@@ -17,20 +17,19 @@ import java.net.URL;
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.mediator.requests.Details;
 import it.sudchiamanord.quizontheroad.operations.mediator.requests.Request;
-import it.sudchiamanord.quizontheroad.operations.mediator.responses.Tec;
-import it.sudchiamanord.quizontheroad.operations.results.LoginResult;
+import it.sudchiamanord.quizontheroad.operations.results.SkipClueResult;
 import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.Utils;
 
-class LoginProxy
+class SkipClueProxy
 {
-    private final String TAG = LoginProxy.class.getSimpleName();
+    private final String TAG = SkipClueProxy.class.getSimpleName();
 
     private HttpURLConnection httpConn;
 
-    LoginProxy (String requestURL) throws IOException
+    SkipClueProxy(String requestURL) throws IOException
     {
-        URL url = new URL(requestURL);
+        URL url = new URL (requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setDoOutput (true);
         httpConn.setRequestMethod ("POST");
@@ -38,17 +37,14 @@ class LoginProxy
         httpConn.setRequestProperty ("Content-Type", "application/json");
     }
 
-    void login (String user, String password, String imei, int matchId) throws IOException
+    void skipClue (String sessionKey, int serverClueId) throws IOException
     {
         Gson gson = new Gson();
         Details details = new Details();
-        details.setUsern (user);
-        details.setPaswd (password);
-        details.setCimei (imei);
-        details.setIdpar (matchId);
+        details.setIdain (serverClueId);
         Request request = new Request();
-        request.setAction (Consts.Actions.login);
-        request.setSessionKey ("");
+        request.setAction (Consts.Actions.skipClue);
+        request.setSessionKey (sessionKey);
         request.setDetails (details);
         String dataRequest = gson.toJson (request);
         try {
@@ -57,18 +53,16 @@ class LoginProxy
             wr.flush();
         }
         catch (IOException e) {
-            Log.e (TAG, "Problem in opening the connection", e);
+            Log.e(TAG, "Problem in opening the connection", e);
             throw new IOException(e);
         }
     }
 
-    LoginResult getLoginResult() throws IOException
+    SkipClueResult getResponse() throws IOException
     {
         int responseCode = httpConn.getResponseCode();
-        Log.d (TAG, "Response Code: " + responseCode);
-
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            InputStream is = new BufferedInputStream(httpConn.getInputStream());
+            InputStream is = new BufferedInputStream (httpConn.getInputStream());
             String response = Utils.convertStreamToString (is);
             Log.d (TAG, "Response: " + response);   // TODO: remove
 
@@ -79,26 +73,16 @@ class LoginProxy
                 JSONObject jsonResponse = new JSONObject(response);
                 String num = jsonResponse.getString ("num");
                 switch (num) {
-                    case "s001":
-                        JSONObject jstec = jsonResponse.getJSONObject ("tec");
-                        Gson gson = new Gson();
-                        Tec tec = gson.fromJson(jstec.toString(), Tec.class);
-                        String sessionKey = tec.getSessionKey();
-                        String username = tec.getUsern();
-                        int idUse = tec.getIduse();
-                        String lastname = tec.getCogno();
-                        String firstname = tec.getNomeu();
-                        String birth = tec.getDatan();
-                        return new LoginResult (sessionKey, username, idUse, lastname, firstname, birth);
+                    case "s009":
+                        return new SkipClueResult (true, R.string.skipClueSucceded, true);
 
-                    case "e007":
-                        return new LoginResult (R.string.wrongPwMsg);
+                    case "e014":
+                        return new SkipClueResult (false, R.string.skipClueFailed, true);
 
-                    case "e008":
-                        return new LoginResult (R.string.wrongUserMsg);
-
-                    case "e010":
-                        return new LoginResult (R.string.wrongIMEIMsg);
+                    case "e002":
+                    case "e004":
+                    case "e005":
+                        return new SkipClueResult (false, R.string.noServerSession, false);
 
                     default:
                         throw new JSONException("Wrong num value " + num);
