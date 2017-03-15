@@ -12,5 +12,14 @@ public interface Consts
         String setCluePosition = "setCluePosition";
         String checkResponsePosition = "checkResponsePosition";
         String skipClue = "skipClue";
+        String setRespClue = "setRespClue";
+    }
+
+    interface FormField
+    {
+        String sessionKey = "sessionKey";
+        String action = "action";
+        String idain = "idain";
+        String uploadedfile = "uploadedfile";
     }
 }

@@ -8,12 +8,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import it.sudchiamanord.quizontheroad.R;
+import it.sudchiamanord.quizontheroad.operations.callbacks.UploadCallback;
 import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
 import it.sudchiamanord.quizontheroad.operations.results.ActualMatchResult;
 import it.sudchiamanord.quizontheroad.operations.results.LoginResult;
 import it.sudchiamanord.quizontheroad.operations.results.LogoutResult;
 import it.sudchiamanord.quizontheroad.operations.results.PositionResult;
 import it.sudchiamanord.quizontheroad.operations.results.SkipClueResult;
+import it.sudchiamanord.quizontheroad.operations.results.UploadResult;
+import it.sudchiamanord.quizontheroad.utils.Consts;
 
 public class Proxy
 {
@@ -52,44 +55,43 @@ public class Proxy
         return new LoginResult (R.string.loginFailed);
     }
 
-//    public static UploadResult doFileUpload (String sessionKey, Uri filePath, String filename,
-//                                             String idInd, UploadCallback callback)
-//    {
-//        try {
-//            // Checking the video size
-//            FileInputStream inputStream = new FileInputStream(filePath.toString());
-//            byte[] buffer = new byte[4096];
-//            int bytesRead = -1;
-//            int totalBytes = 0;
-//            while ((bytesRead = inputStream.read(buffer)) != -1) {
-//                totalBytes += bytesRead;
-//            }
-//            inputStream.close();
-//            Log.d (TAG, "Total bytes: " + totalBytes);
-//            if (totalBytes > MAX_UPLOAD_SIZE) {
-//                return new UploadResult (false, R.string.fileTooBig, true,
-//                        UploadResult.UploadStatus.file_too_big);
-//            }
-//
-//
-//            MultipartProxy multipart = new MultipartProxy (MANAGER_CONN_URL, "UTF-8");
-//
-//            multipart.addFormField ("sessionKey", sessionKey);
-//            multipart.addFormField ("action", "setRespClue");
-//            multipart.addFormField ("idain", idInd);
-//
-//            multipart.addFilePart ("uploadedfile", new File(filePath.toString()), callback,
-//                    totalBytes);
-//
-//            multipart.finish();
-//            return multipart.getResponse();
-//        }
-//        catch (IOException e) {
-//            Log.e (TAG, "error: " + e.getMessage(), e);
-//        }
-//
-//        return null;
-//    }
+    public static UploadResult doFileUpload (String sessionKey, Uri filePath, String filename,
+                                             String idInd, UploadCallback callback)
+    {
+        try {
+            // Checking the video size
+            FileInputStream inputStream = new FileInputStream(filePath.toString());
+            byte[] buffer = new byte[4096];
+            int bytesRead = -1;
+            int totalBytes = 0;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                totalBytes += bytesRead;
+            }
+            inputStream.close();
+            Log.d (TAG, "Total bytes: " + totalBytes);
+            if (totalBytes > MAX_UPLOAD_SIZE) {
+                return new UploadResult (false, R.string.fileTooBig, true,
+                        UploadResult.UploadStatus.file_too_big);
+            }
+
+            MultipartProxy multipart = new MultipartProxy (MANAGER_CONN_URL, "UTF-8");
+
+            multipart.addFormField (Consts.FormField.sessionKey, sessionKey);
+            multipart.addFormField (Consts.FormField.action, Consts.Actions.setRespClue);
+            multipart.addFormField (Consts.FormField.idain, idInd);
+
+            multipart.addFilePart (Consts.FormField.uploadedfile, new File (filePath.toString()),
+                    callback, totalBytes);
+
+            multipart.finish();
+            return multipart.getResponse();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "error: " + e.getMessage(), e);
+        }
+
+        return null;
+    }
 
     public static ActualMatchResult getActualMatch (String sessionKey)
     {

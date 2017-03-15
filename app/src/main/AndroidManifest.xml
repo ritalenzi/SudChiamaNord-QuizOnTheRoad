@@ -41,6 +41,69 @@
             android:name=".activities.LoginActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".activities.InfoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.StagesActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.SingleStageActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.PhotoSendingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.AudioRecordingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.TextSendingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.VideoRecordingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.CaptureVideoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.VideoPlayerActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.LogoutActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <provider
+            android:name=".provider.StageProvider"
+            android:authorities="nord.chiama.sud.caccia.provider.stageprovider"
+            android:exported="false" />
+
+        <service
+            android:name=".services.CheckPositionService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".services.CheckPositionReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="nord.chiama.sud.caccia.USER_ACTION" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".services.PositionSenderService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
