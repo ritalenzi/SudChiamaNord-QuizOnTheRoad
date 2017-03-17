@@ -49,6 +49,7 @@ public class LoginActivity extends GenericActivity<LoginOps>
     private CheckBox mShowPw;
     private Button mLoginBtn;
     private Spinner mActiveMatchesSpinner;
+    private boolean mDevelMode;
 
     private String mSessionKey;
     private Map<String, Integer> mActiveMatches; // key: match name, value: match id
@@ -79,7 +80,13 @@ public class LoginActivity extends GenericActivity<LoginOps>
         mLoginBtn = (Button) findViewById (R.id.loginButton);
 
         Intent intent = getIntent();
+        mDevelMode = intent.getBooleanExtra (Tags.DEVEL, false);
         mActiveMatches = (HashMap<String, Integer>) intent.getSerializableExtra (Tags.ACTIVE_MATCHES);
+
+        if (mDevelMode) {
+            mUser.setText ("33812345678");
+            mPassword.setText ("bonazza");
+        }
 
         List<String> spinnerLabels = new ArrayList<>();
         spinnerLabels.add (getString (R.string.selectMatchSpinnerLabel));
@@ -206,9 +213,9 @@ public class LoginActivity extends GenericActivity<LoginOps>
 
     private void startStagesActivity()
     {
-//        Intent intent = new Intent (this, StagesActivity.class);
-//        intent.putExtra (Tags.SESSION_KEY, mSessionKey);
-//        startActivity (intent);
+        Intent intent = new Intent (this, StagesActivity.class);
+        intent.putExtra (Tags.SESSION_KEY, mSessionKey);
+        startActivity (intent);
     }
 
     public void notifyProgressUpdate (int progress, int dialogTitle, int dialogExpl)

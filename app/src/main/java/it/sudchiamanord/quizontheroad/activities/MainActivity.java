@@ -22,6 +22,7 @@ import it.sudchiamanord.quizontheroad.utils.Tags;
 public class MainActivity extends GenericActivity<ActiveMatchesOps>
 {
     private RingProgressDialog mOpProgressDialog;
+    private CheckBox mDevelCB;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -34,8 +35,8 @@ public class MainActivity extends GenericActivity<ActiveMatchesOps>
         fab.setOnClickListener (new View.OnClickListener() {
             @Override
             public void onClick (View view) {
-                CheckBox devel = (CheckBox) findViewById (R.id.devel_check_box);
-                getOps().request (devel.isChecked());
+                mDevelCB = (CheckBox) findViewById (R.id.devel_check_box);
+                getOps().request (mDevelCB.isChecked());
             }
         });
 
@@ -57,6 +58,7 @@ public class MainActivity extends GenericActivity<ActiveMatchesOps>
             map.put (match.name, match.id);
         }
         Intent intent = new Intent (this, LoginActivity.class);
+        intent.putExtra (Tags.DEVEL, mDevelCB.isChecked());
         intent.putExtra (Tags.ACTIVE_MATCHES, map);
         startActivity (intent);
     }

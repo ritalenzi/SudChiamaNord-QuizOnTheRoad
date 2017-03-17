@@ -1,7 +1,11 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,20 +101,48 @@ public class StagesActivity extends GenericActivity<StagesOps>
 //            finish();
             // TODO: add stop PositionSenderService in all the activities if session id == null
             PositionSenderService.terminate();
-            startActivity (new Intent(this, LoginActivity.class));
+            startActivity (new Intent (this, LoginActivity.class));
             finish();
         }
 
         if (!PositionSenderService.isRunning()) {
-            Intent intent = new Intent(this, PositionSenderService.class);
+            if (ContextCompat.checkSelfPermission (this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        Tags.READ_LOCATION_REQUEST);
+                return;
+            }
+
+            Intent intent = new Intent (this, PositionSenderService.class);
             intent.putExtra (Tags.SESSION_KEY, mSessionKey);
-            startService(intent);
+            startService (intent);
         }
         else {
             Log.d (TAG, "The PositionSenderService is already running");
         }
 
-        getOps().requestStagesInfo(mSessionKey);
+        getOps().requestStagesInfo (mSessionKey);
+    }
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.READ_LOCATION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Intent intent = new Intent (this, PositionSenderService.class);
+                    intent.putExtra (Tags.SESSION_KEY, mSessionKey);
+                    startService (intent);
+
+                    getOps().requestStagesInfo (mSessionKey);
+                }
+                else {
+                    Toast.makeText (this, R.string.readLocationPermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 
     @Override

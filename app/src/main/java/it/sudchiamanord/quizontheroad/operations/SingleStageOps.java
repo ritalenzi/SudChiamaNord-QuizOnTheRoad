@@ -1,7 +1,11 @@
 package it.sudchiamanord.quizontheroad.operations;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
@@ -16,6 +20,7 @@ import it.sudchiamanord.quizontheroad.utils.GPSClient;
 import it.sudchiamanord.quizontheroad.utils.GenericAsyncTask;
 import it.sudchiamanord.quizontheroad.utils.GenericAsyncTaskOps;
 import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Tags;
 
 public class SingleStageOps implements ConfigurableOps, GenericAsyncTaskOps<Object, Integer, Object>//,
 //        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener

@@ -1,9 +1,13 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -167,6 +171,25 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.READ_LOCATION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    mSendPositionBtn.setEnabled (false);
+                    getOps().sendPosition (mSessionKey, mIdInd);
+                }
+                else {
+                    Toast.makeText (this, R.string.readLocationPermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
     public void sendPosition (View view)
     {
         if ((mSessionKey == null) || (mIdInd == null)) {
@@ -186,6 +209,15 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
                             GPSClient.showEnableDialog (SingleStageActivity.this);
                         }
                         else {
+                            if (ContextCompat.checkSelfPermission (SingleStageActivity.this,
+                                    Manifest.permission.ACCESS_FINE_LOCATION) !=
+                                    PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions (SingleStageActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        Tags.READ_LOCATION_REQUEST);
+                                return;
+                            }
+
                             mSendPositionBtn.setEnabled (false);
                             getOps().sendPosition (mSessionKey, mIdInd);
                         }
