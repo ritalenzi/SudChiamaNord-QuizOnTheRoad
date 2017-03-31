@@ -38,7 +38,7 @@ public class StagesActivity extends GenericActivity<StagesOps>
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
-        setTheme(android.R.style.Theme_Holo_Light_DarkActionBar);
+        setTheme (android.R.style.Theme_Holo_Light_DarkActionBar);
         setContentView (R.layout.activity_stages_list);
 
         mOpProgressDialog = new RingProgressDialog (StagesActivity.this);
@@ -88,7 +88,7 @@ public class StagesActivity extends GenericActivity<StagesOps>
             }
         });
 
-        super.onCreate(savedInstanceState, StagesOps.class);
+        super.onCreate (savedInstanceState, StagesOps.class);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class StagesActivity extends GenericActivity<StagesOps>
             if (ContextCompat.checkSelfPermission (this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        Tags.READ_LOCATION_REQUEST);
+                        Tags.READ_LOCATION_PERMISSION_REQUEST);
                 return;
             }
 
@@ -128,7 +128,7 @@ public class StagesActivity extends GenericActivity<StagesOps>
     public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
     {
         switch (requestCode) {
-            case Tags.READ_LOCATION_REQUEST: {
+            case Tags.READ_LOCATION_PERMISSION_REQUEST: {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Intent intent = new Intent (this, PositionSenderService.class);

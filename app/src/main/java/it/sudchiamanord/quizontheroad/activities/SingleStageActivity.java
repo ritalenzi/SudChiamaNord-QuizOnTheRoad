@@ -175,7 +175,7 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
     public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
     {
         switch (requestCode) {
-            case Tags.READ_LOCATION_REQUEST: {
+            case Tags.READ_LOCATION_PERMISSION_REQUEST: {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
@@ -214,7 +214,7 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
                                     PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions (SingleStageActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        Tags.READ_LOCATION_REQUEST);
+                                        Tags.READ_LOCATION_PERMISSION_REQUEST);
                                 return;
                             }
 
@@ -367,6 +367,7 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
                 cameraIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (cameraIntent, IntentIds.REQUEST_CAMERA_INTENT);
                 break;
+
             case audio:
                 Intent audioIntent = new Intent(getApplicationContext(), AudioRecordingActivity.class);
                 audioIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
@@ -374,6 +375,7 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
                 audioIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (audioIntent, IntentIds.REQUEST_AUDIO_INTENT);
                 break;
+
             case text:
                 Intent textIntent = new Intent(getApplicationContext(), TextSendingActivity.class);
                 textIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
@@ -381,8 +383,9 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
                 textIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (textIntent, IntentIds.REQUEST_TEXT_INTENT);
                 break;
+
             case video:
-                Intent videoIntent = new Intent(getApplicationContext(), VideoRecordingActivity.class);
+                Intent videoIntent = new Intent (getApplicationContext(), VideoRecordingActivity.class);
                 videoIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
                 videoIntent.putExtra (Tags.SESSION_KEY, mSessionKey);
                 videoIntent.putExtra (Tags.ID_IND, mIdInd);

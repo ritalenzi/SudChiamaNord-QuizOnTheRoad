@@ -82,7 +82,7 @@ public class Utils
     {
         File storageDir = Environment.getExternalStorageDirectory();
         storageDir.mkdirs();
-        File appDir = new File(storageDir.getAbsolutePath() + "/" + appFolder);
+        File appDir = new File (storageDir.getAbsolutePath() + "/" + appFolder);
         appDir.mkdir();
 
         return appDir.getAbsolutePath();

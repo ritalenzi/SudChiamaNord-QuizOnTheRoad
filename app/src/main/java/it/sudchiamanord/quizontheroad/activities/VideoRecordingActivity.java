@@ -1,11 +1,15 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,9 +63,6 @@ public class VideoRecordingActivity extends SendingActivity
         mOpProgressDialog = new BarProgressDialog (VideoRecordingActivity.this);
 
         mAppFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
-
-        String appFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
-        mFilePath = Utils.createDirectory (appFolder);
         mSessionKey = getIntent().getStringExtra (Tags.SESSION_KEY);
         mIdInd = getIntent().getStringExtra (Tags.ID_IND);
 
@@ -72,6 +73,7 @@ public class VideoRecordingActivity extends SendingActivity
             @Override
             public void onClick (View v)
             {
+
                 if ((mFilePath == null) || (mFileName == null)) {
                     Toast.makeText (getApplicationContext(), R.string.noVideoRecorded,
                             Toast.LENGTH_SHORT).show();
@@ -94,6 +96,12 @@ public class VideoRecordingActivity extends SendingActivity
             @Override
             public void onClick (View v)
             {
+                if (!hasPermissions()) {
+                    Toast.makeText (getApplicationContext(),
+                            R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 recordVideo();
             }
         });
@@ -122,7 +130,7 @@ public class VideoRecordingActivity extends SendingActivity
                                 getOps().sendData (mSessionKey, mFileName, mFilePath, mIdInd, Test.video);
                             }
                         })
-                        .setNegativeButton(R.string.noOption, new DialogInterface.OnClickListener() {
+                        .setNegativeButton (R.string.noOption, new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
                                 dialog.cancel();
                             }
@@ -131,6 +139,12 @@ public class VideoRecordingActivity extends SendingActivity
                 alert.show();
             }
         });
+
+        if (!hasPermissions()) {
+            Toast.makeText (getApplicationContext(),
+                    R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         recordVideo();
 
@@ -185,6 +199,7 @@ public class VideoRecordingActivity extends SendingActivity
         return true;
     }
 
+    @Override
     public void onRestoreInstanceState (Bundle savedInstanceState)
     {
         super.onRestoreInstanceState (savedInstanceState);
@@ -246,6 +261,37 @@ public class VideoRecordingActivity extends SendingActivity
                 mUploadVideo.setVisibility (View.INVISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    mFilePath = Utils.createDirectory (mAppFolder);
+                    recordVideo();
+                }
+                else {
+                    Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    private boolean hasPermissions()
+    {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return false;
+        }
+
+        return true;
     }
 
     private File createEmptyVideoFile (String appFolder) throws IOException

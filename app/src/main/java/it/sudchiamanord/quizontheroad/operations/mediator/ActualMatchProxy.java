@@ -69,7 +69,7 @@ class ActualMatchProxy
         if (responseCode == HttpURLConnection.HTTP_OK) {
             InputStream is = new BufferedInputStream (httpConn.getInputStream());
             String response = Utils.convertStreamToString (is);
-            Log.d (TAG, "Response: " + response);   // TODO: remove
+            Log.d (TAG, "Actual Match Response: " + response);   // TODO: remove
 
             is.close();
             httpConn.disconnect();

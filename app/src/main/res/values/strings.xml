@@ -36,6 +36,7 @@
 
     <string name="readPhoneStatePermissionDenied">Impossible to login (and play) without granting the permission to access the phone state</string>
     <string name="readLocationPermissionDenied">Impossible to retrieve the gps position. Provide the necessary permissions or it will be impossible to keep playing</string>
+    <string name="writeExternalStoragePermissionDenied">Impossible to save files on the phone. Provide the necessary permissions or it will be impossible to keep playing</string>
 
     <string name="loginFailed">Impossible to login</string>
     <string name="nullUserAndPwMsg">Specify username and password</string>
