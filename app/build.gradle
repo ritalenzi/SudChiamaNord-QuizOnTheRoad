@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
+        jni.srcDirs = [] //disable automatic ndk-build call
+    }
 }
 
 dependencies {
@@ -30,4 +34,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.0.1'
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile files('libs/aspectjrt-1.7.3.jar')
+    compile files('libs/isoparser-1.0.6.jar')
 }

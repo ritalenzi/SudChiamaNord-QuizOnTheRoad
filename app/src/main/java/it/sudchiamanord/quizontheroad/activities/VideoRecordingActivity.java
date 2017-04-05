@@ -297,7 +297,7 @@ public class VideoRecordingActivity extends SendingActivity
     private File createEmptyVideoFile (String appFolder) throws IOException
     {
         String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format (new Date()) + VIDEO_EXTENSION;
-        File dstFile = new File(Utils.createDirectory (appFolder), fileName);
+        File dstFile = new File (Utils.createDirectory (appFolder), fileName);
         dstFile.createNewFile();
         Log.d (TAG, "File text length " + dstFile.length() + " path " + dstFile.getAbsolutePath());
 
@@ -306,12 +306,12 @@ public class VideoRecordingActivity extends SendingActivity
 
     private File createVideoFile (String appFolder, File originalVideoFile) throws IOException
     {
-        String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format (new Date()) + VIDEO_EXTENSION;
-        File dstFile = new File(Utils.createDirectory (appFolder), fileName);
+        String fileName = new SimpleDateFormat ("yyyyMMdd_HHmmss").format (new Date()) + VIDEO_EXTENSION;
+        File dstFile = new File (Utils.createDirectory (appFolder), fileName);
         dstFile.createNewFile();
 
-        InputStream in = new FileInputStream(originalVideoFile);
-        OutputStream out = new FileOutputStream(dstFile);
+        InputStream in = new FileInputStream (originalVideoFile);
+        OutputStream out = new FileOutputStream (dstFile);
         byte[] buf = new byte[1024];
         int len;
         while ((len = in.read(buf)) > 0) {
