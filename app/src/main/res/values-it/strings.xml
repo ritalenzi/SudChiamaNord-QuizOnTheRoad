@@ -37,6 +37,7 @@
     <string name="readPhoneStatePermissionDenied">Impossibile effettare il login (e quindi giocare) senza fornire i permessi per accedere allo stato del telefono</string>
     <string name="readLocationPermissionDenied">Impossibile ottenere la posizione. Fornire i permessi necessari o sara\' impossibile continuare la partita</string>
     <string name="writeExternalStoragePermissionDenied">Impossibile salvare file sul telefono. Fornire i permessi necessari o sara\' impossibile continuare la partita</string>
+    <string name="readExternalStoragePermissionDenied">Impossibile accedere alla memoria del telefono. Fornire i permessi necessari o sara\' impossibile continuare la partita</string>
     <string name="cameraPermissionDenied">Impossibile usare la fotocamera per foto o video. Fornire i permessi necessari o sara\' impossibile continuare la partita</string>
 
     <string name="loginFailed">Impossibile effettuare il login</string>

@@ -32,7 +32,7 @@ public class Utils
             return null;
         }
 
-        File directory = new File(directoryPathname);
+        File directory = new File (directoryPathname);
 
         if (!directory.exists()) {
             directory.mkdirs();
@@ -81,9 +81,14 @@ public class Utils
     public static String createDirectory (String appFolder)
     {
         File storageDir = Environment.getExternalStorageDirectory();
-        storageDir.mkdirs();
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
+        }
+
         File appDir = new File (storageDir.getAbsolutePath() + "/" + appFolder);
-        appDir.mkdir();
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
 
         return appDir.getAbsolutePath();
     }

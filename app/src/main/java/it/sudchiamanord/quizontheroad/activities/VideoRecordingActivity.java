@@ -283,6 +283,18 @@ public class VideoRecordingActivity extends SendingActivity
 
                 return;
 
+            case Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST:
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    mFilePath = Utils.createDirectory (mAppFolder);
+                }
+                else {
+                    Toast.makeText (this, R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+
             case Tags.CAMERA_PERMISSION_REQUEST:
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
@@ -300,6 +312,13 @@ public class VideoRecordingActivity extends SendingActivity
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return false;
+        }
+
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST);
             return false;
         }
 
