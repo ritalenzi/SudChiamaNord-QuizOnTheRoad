@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -237,7 +238,10 @@ public class VideoRecordingActivity extends SendingActivity
 
         mFilePath = videoFile.getAbsolutePath();
         mFileName = videoFile.getName();
-        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, Uri.fromFile (videoFile));
+//        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, Uri.fromFile (videoFile));
+        Uri videoURI = FileProvider.getUriForFile (this,
+                getApplicationContext().getPackageName() + ".provider", videoFile);
+        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, videoURI);
         if (captureVideoIntent.resolveActivity (getPackageManager()) != null) {
             startActivityForResult (captureVideoIntent, IntentIds.CAPTURE_VIDEO_REQUEST);
         }
@@ -267,18 +271,26 @@ public class VideoRecordingActivity extends SendingActivity
     public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
     {
         switch (requestCode) {
-            case Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST: {
+            case Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST:
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     mFilePath = Utils.createDirectory (mAppFolder);
-                    recordVideo();
                 }
                 else {
                     Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
                 }
+
                 return;
-            }
+
+            case Tags.CAMERA_PERMISSION_REQUEST:
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    recordVideo();
+                }
+                else {
+                    Toast.makeText (this, R.string.cameraPermissionDenied, Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
@@ -288,6 +300,13 @@ public class VideoRecordingActivity extends SendingActivity
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return false;
+        }
+
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.CAMERA},
+                    Tags.CAMERA_PERMISSION_REQUEST);
             return false;
         }
 
