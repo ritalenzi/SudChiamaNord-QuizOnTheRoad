@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -48,6 +51,8 @@ public class VideoRecordingActivity extends SendingActivity
 
     private Button mPlayVideo;
     private Button mRecordVideo;
+    private Button mOpenVideo;
+    private ImageView mVideoPreview;
     private Button mUploadVideo;
     private String mSessionKey;
     private String mIdInd;  // Id of the current clue
@@ -107,6 +112,24 @@ public class VideoRecordingActivity extends SendingActivity
             }
         });
 
+        mOpenVideo = (Button) findViewById (R.id.openVideo);
+        mOpenVideo.setOnClickListener (new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v)
+            {
+                if (!hasPermissions()) {
+                    Toast.makeText (getApplicationContext(),
+                            R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // TODO: open video
+            }
+        });
+
+        mVideoPreview = (ImageView) findViewById (R.id.videoPreview);
+
         mUploadVideo = (Button) findViewById (R.id.uploadVideo);
         mUploadVideo.setEnabled (false);
         mUploadVideo.setVisibility (View.INVISIBLE);
@@ -141,13 +164,13 @@ public class VideoRecordingActivity extends SendingActivity
             }
         });
 
-        if (!hasPermissions()) {
-            Toast.makeText (getApplicationContext(),
-                    R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        recordVideo();
+//        if (!hasPermissions()) {
+//            Toast.makeText (getApplicationContext(),
+//                    R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        recordVideo();
 
 //        if (takeVideoIntent.resolveActivity (getPackageManager()) != null) {
 //            File videoFile = null;
@@ -255,6 +278,10 @@ public class VideoRecordingActivity extends SendingActivity
                 mPlayVideo.setEnabled (true);
                 mUploadVideo.setEnabled (true);
                 mUploadVideo.setVisibility (View.VISIBLE);
+
+                Bitmap bMap = ThumbnailUtils.createVideoThumbnail (new File (mFilePath).getAbsolutePath(),
+                        MediaStore.Video.Thumbnails.MICRO_KIND);
+                mVideoPreview.setImageBitmap (bMap);
             }
             else {
                 mFilePath = null;

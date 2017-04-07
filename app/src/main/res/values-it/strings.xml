@@ -126,7 +126,8 @@
     <string name="videoDialogExpl">Sto inviando il video…</string>
     <string name="videoUploadSuccess">Video mandato con successo</string>
     <string name="videoUploadFailed">Impossibile mandare il video</string>
-    <string name="recordVideo">Cattura un nuovo video</string>
+    <string name="recordVideo">Cattura un video</string>
+    <string name="openVideo">Apri un video</string>
     <string name="uploadVideoButton">Invia il video</string>
     <string name="noVideoRecorded">Nessun video creato!</string>
     <string name="errorSavingVideo">Problema nel salvataggio del video sul telefono</string>

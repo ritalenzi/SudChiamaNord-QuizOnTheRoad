@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_video_record_layout"
     android:orientation="vertical"
@@ -25,30 +26,56 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/playButton"
-        android:id="@+id/playVideo"
-        android:layout_marginTop="100dp"
-        android:width="180dp"
+        android:text="@string/recordVideo"
+        android:id="@+id/recordVideo"
+        android:layout_marginLeft="29dp"
+        android:layout_marginStart="29dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/recordVideo"
-        android:layout_alignStart="@+id/recordVideo" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="72dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recordVideo"
-        android:id="@+id/recordVideo"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/playVideo"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/openVideo"
+        android:id="@+id/openVideo"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:layout_alignBaseline="@+id/recordVideo"
+        android:layout_alignBottom="@+id/recordVideo"
+        android:layout_toRightOf="@+id/recordVideo"
+        android:layout_toEndOf="@+id/recordVideo" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/uploadVideoButton"
         android:id="@+id/uploadVideo"
+        android:layout_marginBottom="22dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="118dp" />
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:id="@+id/videoPreview"
+        android:layout_below="@+id/recordVideo"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="180dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playButton"
+        android:id="@+id/playVideo"
+        android:width="180dp"
+        android:layout_marginBottom="9dp"
+        android:layout_above="@+id/uploadVideo"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
