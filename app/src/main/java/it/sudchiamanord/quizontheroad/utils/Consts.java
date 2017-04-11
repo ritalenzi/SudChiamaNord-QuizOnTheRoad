@@ -2,6 +2,8 @@ package it.sudchiamanord.quizontheroad.utils;
 
 public interface Consts
 {
+    String appFolder = "/QuizOnTheRoad";
+
     interface Actions
     {
         String setActiveMatches = "getListaPartiteAttive";

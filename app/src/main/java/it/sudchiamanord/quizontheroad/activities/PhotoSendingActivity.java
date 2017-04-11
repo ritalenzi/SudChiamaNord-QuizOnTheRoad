@@ -25,6 +25,7 @@ import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.operations.SendDataOps;
 import it.sudchiamanord.quizontheroad.stage.Test;
 import it.sudchiamanord.quizontheroad.utils.BarProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.IntentIds;
 import it.sudchiamanord.quizontheroad.utils.Tags;
 import it.sudchiamanord.quizontheroad.utils.Utils;
@@ -33,6 +34,7 @@ public class PhotoSendingActivity extends SendingActivity
 {
     private static final String TAG = "PhotoSendingActivity";
 
+    //private String mAppFolder;
     private String photoName;
     private String photoAbsolutePath;
     private String mSessionKey;
@@ -43,7 +45,7 @@ public class PhotoSendingActivity extends SendingActivity
     {
         setTheme (android.R.style.Theme_Holo_Light_DarkActionBar);
 
-        String appFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
+//        mAppFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
         mSessionKey = getIntent().getStringExtra (Tags.SESSION_KEY);
         mIdInd = getIntent().getStringExtra (Tags.ID_IND);
 
@@ -55,7 +57,7 @@ public class PhotoSendingActivity extends SendingActivity
         if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
             File photoFile = null;
             try {
-                photoFile = createImageFile (appFolder);
+                photoFile = createImageFile (Consts.appFolder);
             }
             catch (IOException ex) {
                 Log.e (TAG, "Error: ", ex);

@@ -6,8 +6,6 @@
     <string name="resetIMEISettings">Reset IMEI</string>
     <string name="logoutSettings">Logout</string>
 
-    <string name="app_folder">/QuizOnTheRoad</string>
-
     <string name="rules">REGOLAMENTO</string>
     <string name="introTitle">CHE COS\'E\'?</string>
     <string name="introDescription">Quiz on the Road &#232; una gara a premi organizzata dall\'Associazione Missionaria SudChiamaNord ONLUS. Il gioco &#232; simile ad una caccia al tesoro da svolgere in auto per raggiungere alcuni luoghi della provincia di Reggio Emilia.</string>
@@ -129,7 +127,7 @@
     <string name="recordVideo">Cattura un video</string>
     <string name="openVideo">Apri un video</string>
     <string name="uploadVideoButton">Invia il video</string>
-    <string name="noVideoRecorded">Nessun video creato!</string>
+    <string name="noVideoRecorded">Nessun video creato o selezionato!</string>
     <string name="errorSavingVideo">Problema nel salvataggio del video sul telefono</string>
     <string name="confirmVideoUpload">Sei sicuro di voler mandare questo video? Non potra\&#39; piu\&#39; essere cambiato</string>
 

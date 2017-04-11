@@ -6,8 +6,6 @@
     <string name="resetIMEISettings">Reset IMEI</string>
     <string name="logoutSettings">Logout</string>
 
-    <string name="app_folder">/QuizOnTheRoad</string>
-
     <string name="rules">VIEW RULES</string>
     <string name="introTitle">WHAT IS IT?</string>
     <string name="introDescription">A contest with prizes organized by the Missionary SudChiamaNord NPO. The game is a treasure hunt with stages spread all over the province of Reggio Emilia (Italy).</string>
@@ -129,7 +127,7 @@
     <string name="recordVideo">Record a video</string>
     <string name="openVideo">Open a video</string>
     <string name="uploadVideoButton">Upload video</string>
-    <string name="noVideoRecorded">Record a video first!</string>
+    <string name="noVideoRecorded">Record or open a video first!</string>
     <string name="errorSavingVideo">Error saving the video on the device</string>
     <string name="confirmVideoUpload">Are you sure you want to upload this video? It cannot be changed</string>
 

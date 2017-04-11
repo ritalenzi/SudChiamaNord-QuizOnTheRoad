@@ -33,6 +33,7 @@ import java.util.Date;
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.stage.Test;
 import it.sudchiamanord.quizontheroad.utils.BarProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.IntentIds;
 import it.sudchiamanord.quizontheroad.utils.Tags;
 import it.sudchiamanord.quizontheroad.utils.Utils;
@@ -47,7 +48,7 @@ public class VideoRecordingActivity extends SendingActivity
 
     private String mFilePath = null;
     private String mFileName = null;
-    private String mAppFolder;
+    //private String mAppFolder;
 
     private Button mPlayVideo;
     private Button mRecordVideo;
@@ -68,7 +69,7 @@ public class VideoRecordingActivity extends SendingActivity
 
         mOpProgressDialog = new BarProgressDialog (VideoRecordingActivity.this);
 
-        mAppFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
+//        mAppFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
         mSessionKey = getIntent().getStringExtra (Tags.SESSION_KEY);
         mIdInd = getIntent().getStringExtra (Tags.ID_IND);
 
@@ -124,7 +125,7 @@ public class VideoRecordingActivity extends SendingActivity
                     return;
                 }
 
-                // TODO: open video
+                // TODO: open video - look at MainActivity of VideoCompressor inside onCreate()
             }
         });
 
@@ -151,7 +152,8 @@ public class VideoRecordingActivity extends SendingActivity
                         {
                             public void onClick (final DialogInterface dialog, final int id)
                             {
-                                getOps().sendData (mSessionKey, mFileName, mFilePath, mIdInd, Test.video);
+                                getOps().sendData (mSessionKey, mFileName, mFilePath, mIdInd,
+                                        Test.video);
                             }
                         })
                         .setNegativeButton (R.string.noOption, new DialogInterface.OnClickListener() {
@@ -163,34 +165,6 @@ public class VideoRecordingActivity extends SendingActivity
                 alert.show();
             }
         });
-
-//        if (!hasPermissions()) {
-//            Toast.makeText (getApplicationContext(),
-//                    R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        recordVideo();
-
-//        if (takeVideoIntent.resolveActivity (getPackageManager()) != null) {
-//            File videoFile = null;
-//            try {
-//                videoFile = createImageFile (appFolder);
-//            }
-//            catch (IOException ex) {
-//                Log.e (TAG, "Error: ", ex);
-//                Toast.makeText (getApplicationContext(), "Problem in saving data on the SD card",
-//                        Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//            if (photoFile != null) {
-//                //photoName = photoFile.getName().substring (0, photoFile.getName().lastIndexOf ("."));
-//                photoName = photoFile.getName();
-//                photoAbsolutePath = photoFile.getAbsolutePath();
-//                takePictureIntent.putExtra (MediaStore.EXTRA_OUTPUT, Uri.fromFile (photoFile));
-//                startActivityForResult (takePictureIntent, IntentIds.REQUEST_TAKE_PHOTO);
-//            }
-//        }
     }
 
     @Override
@@ -249,7 +223,7 @@ public class VideoRecordingActivity extends SendingActivity
 
         File videoFile = null;
         try {
-            videoFile = createEmptyVideoFile (mAppFolder);
+            videoFile = createEmptyVideoFile (Consts.appFolder);
         }
         catch (IOException e) {
             Log.e (TAG, "Impossible to save video", e);
@@ -302,7 +276,7 @@ public class VideoRecordingActivity extends SendingActivity
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    mFilePath = Utils.createDirectory (mAppFolder);
+                    mFilePath = Utils.createDirectory (Consts.appFolder);
                 }
                 else {
                     Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
@@ -314,7 +288,7 @@ public class VideoRecordingActivity extends SendingActivity
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    mFilePath = Utils.createDirectory (mAppFolder);
+                    mFilePath = Utils.createDirectory (Consts.appFolder);
                 }
                 else {
                     Toast.makeText (this, R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();

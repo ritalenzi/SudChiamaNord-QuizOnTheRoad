@@ -23,6 +23,7 @@ import java.util.UUID;
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.stage.Test;
 import it.sudchiamanord.quizontheroad.utils.BarProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.Tags;
 import it.sudchiamanord.quizontheroad.utils.Utils;
 
@@ -44,6 +45,7 @@ public class AudioRecordingActivity extends SendingActivity
 
     private Button mUploadAudio = null;
 
+    //private String mAppFolder;
     private static String mFilePath = null;
     private static String mFileName = null;
     private String mSessionKey;
@@ -55,8 +57,8 @@ public class AudioRecordingActivity extends SendingActivity
         super.onCreate(savedInstanceState);
         setTheme (android.R.style.Theme_Holo_Light_DarkActionBar);
 
-        String appFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
-        mFilePath = Utils.createDirectory(appFolder);
+        //mAppFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
+        mFilePath = Utils.createDirectory (Consts.appFolder);
         mSessionKey = getIntent().getStringExtra (Tags.SESSION_KEY);
         mIdInd = getIntent().getStringExtra (Tags.ID_IND);
 

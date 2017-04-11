@@ -361,24 +361,24 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
 
         switch (mStageTest) {
             case photo:
-                Intent cameraIntent = new Intent(getApplicationContext(), PhotoSendingActivity.class);
-                cameraIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
+                Intent cameraIntent = new Intent (getApplicationContext(), PhotoSendingActivity.class);
+                //cameraIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
                 cameraIntent.putExtra (Tags.SESSION_KEY, mSessionKey);
                 cameraIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (cameraIntent, IntentIds.REQUEST_CAMERA_INTENT);
                 break;
 
             case audio:
-                Intent audioIntent = new Intent(getApplicationContext(), AudioRecordingActivity.class);
-                audioIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
+                Intent audioIntent = new Intent (getApplicationContext(), AudioRecordingActivity.class);
+                //audioIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
                 audioIntent.putExtra (Tags.SESSION_KEY, mSessionKey);
                 audioIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (audioIntent, IntentIds.REQUEST_AUDIO_INTENT);
                 break;
 
             case text:
-                Intent textIntent = new Intent(getApplicationContext(), TextSendingActivity.class);
-                textIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
+                Intent textIntent = new Intent (getApplicationContext(), TextSendingActivity.class);
+                //textIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
                 textIntent.putExtra (Tags.SESSION_KEY, mSessionKey);
                 textIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (textIntent, IntentIds.REQUEST_TEXT_INTENT);
@@ -386,7 +386,7 @@ public class SingleStageActivity extends GenericActivity<SingleStageOps>
 
             case video:
                 Intent videoIntent = new Intent (getApplicationContext(), VideoRecordingActivity.class);
-                videoIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
+                //videoIntent.putExtra (Tags.APP_FOLDER, getString (R.string.app_folder));
                 videoIntent.putExtra (Tags.SESSION_KEY, mSessionKey);
                 videoIntent.putExtra (Tags.ID_IND, mIdInd);
                 startActivityForResult (videoIntent, IntentIds.REQUEST_VIDEO_INTENT);

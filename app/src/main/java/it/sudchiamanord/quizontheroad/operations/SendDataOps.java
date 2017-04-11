@@ -9,6 +9,7 @@ import java.lang.ref.WeakReference;
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.activities.SendingActivity;
 import it.sudchiamanord.quizontheroad.operations.callbacks.UploadCallback;
+import it.sudchiamanord.quizontheroad.operations.compression.MediaController;
 import it.sudchiamanord.quizontheroad.operations.mediator.Proxy;
 import it.sudchiamanord.quizontheroad.operations.results.UploadResult;
 import it.sudchiamanord.quizontheroad.stage.Test;
@@ -31,6 +32,7 @@ public class SendDataOps implements ConfigurableOps, GenericAsyncTaskOps<Void, I
     private String mFilename;
     private String mIdInd;
     private Uri mFileUri;
+    private Test mTest;
     private MultimediaActivitiesMap.DialogsInfo mDialogsInfo;
     private boolean mIsUploadFinished = false;
     //private boolean mIsUploadSuccessful = false;
@@ -75,6 +77,7 @@ public class SendDataOps implements ConfigurableOps, GenericAsyncTaskOps<Void, I
         mFilename = filename;
         mFileUri = Uri.parse (mPathname);
         mIdInd = idInd;
+        mTest = test;
         mDialogsInfo = MultimediaActivitiesMap.getDialogsInfo (test);
         if (mDialogsInfo == null) {
             Log.e (TAG, "Wrong StageTest " + test);
@@ -133,6 +136,12 @@ public class SendDataOps implements ConfigurableOps, GenericAsyncTaskOps<Void, I
     public UploadResult doInBackground (Void... param)
     {
         Log.i (TAG, "Started doInBackground");
+
+        if (mTest.equals (Test.video)) {
+            Log.i (TAG, "Compressing the video before sending it");
+            MediaController.getInstance().convertVideo (mPathname);
+        }
+
         return Proxy.doFileUpload (mSessionKey, mFileUri, mFilename, mIdInd, this);
     }
 

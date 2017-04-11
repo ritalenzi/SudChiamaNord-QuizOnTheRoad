@@ -22,6 +22,7 @@ import java.util.Date;
 import it.sudchiamanord.quizontheroad.R;
 import it.sudchiamanord.quizontheroad.stage.Test;
 import it.sudchiamanord.quizontheroad.utils.BarProgressDialog;
+import it.sudchiamanord.quizontheroad.utils.Consts;
 import it.sudchiamanord.quizontheroad.utils.Tags;
 import it.sudchiamanord.quizontheroad.utils.Utils;
 
@@ -30,6 +31,7 @@ public class TextSendingActivity extends SendingActivity
 {
     private static final String TAG = TextSendingActivity.class.getSimpleName();
 
+//    private String mAppFolder;
     private static String mFilePath = null;
     private static String mFileName = null;
     private String mSessionKey;
@@ -43,7 +45,7 @@ public class TextSendingActivity extends SendingActivity
         super.onCreate (savedInstanceState);
         setTheme (android.R.style.Theme_Holo_Light_DarkActionBar);
 
-        final String appFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
+//        mAppFolder = getIntent().getStringExtra (Tags.APP_FOLDER);
         mSessionKey = getIntent().getStringExtra (Tags.SESSION_KEY);
         mIdInd = getIntent().getStringExtra (Tags.ID_IND);
 
@@ -65,7 +67,7 @@ public class TextSendingActivity extends SendingActivity
                 }
 
                 try {
-                    File f = createTextFile (appFolder, mMessage.getText().toString());
+                    File f = createTextFile (Consts.appFolder, mMessage.getText().toString());
                     mFilePath = f.getAbsolutePath();
                     mFileName = f.getName();
                 }
@@ -82,7 +84,8 @@ public class TextSendingActivity extends SendingActivity
                         {
                             public void onClick (final DialogInterface dialog, final int id)
                             {
-                                getOps().sendData (mSessionKey, mFileName, mFilePath, mIdInd, Test.text);
+                                getOps().sendData (mSessionKey, mFileName, mFilePath, mIdInd,
+                                        Test.text);
                             }
                         })
                         .setNegativeButton(R.string.noOption, new DialogInterface.OnClickListener() {
