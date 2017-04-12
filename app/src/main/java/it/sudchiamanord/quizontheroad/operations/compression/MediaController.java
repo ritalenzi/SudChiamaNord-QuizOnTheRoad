@@ -222,7 +222,8 @@ public class MediaController
     }
 
     @TargetApi(16)
-    public boolean convertVideo(final String path) {
+    public String convertVideo (final String path)
+    {
 
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(path);
@@ -243,11 +244,11 @@ public class MediaController
         int bitrate = 450000;
         int rotateRender = 0;
 
-        File cacheFile = new File(
+        File compressedFile = new File (
                 Environment.getExternalStorageDirectory()
                         + File.separator
                         + Consts.appFolder,
-                "VIDEO_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".mp4"
+                "COMPR_" + new SimpleDateFormat ("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".mp4"
         );
 
         if (Build.VERSION.SDK_INT < 18 && resultHeight > resultWidth && resultWidth != originalWidth && resultHeight != originalHeight) {
@@ -278,8 +279,8 @@ public class MediaController
 
         File inputFile = new File(path);
         if (!inputFile.canRead()) {
-            didWriteData(true, true);
-            return false;
+            didWriteData (true, true);
+            return null;
         }
 
         videoConvertFirstWrite = true;
@@ -295,7 +296,7 @@ public class MediaController
             try {
                 MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
                 Mp4Movie movie = new Mp4Movie();
-                movie.setCacheFile(cacheFile);
+                movie.setCacheFile(compressedFile);
                 movie.setRotation(rotationValue);
                 movie.setSize(resultWidth, resultHeight);
                 mediaMuxer = new MP4Builder().createMovie(movie);
@@ -635,13 +636,13 @@ public class MediaController
                         }
                     }
                 } else {
-                    long videoTime = readAndWriteTrack(extractor, mediaMuxer, info, startTime, endTime, cacheFile, false);
+                    long videoTime = readAndWriteTrack(extractor, mediaMuxer, info, startTime, endTime, compressedFile, false);
                     if (videoTime != -1) {
                         videoStartTime = videoTime;
                     }
                 }
                 if (!error) {
-                    readAndWriteTrack(extractor, mediaMuxer, info, videoStartTime, endTime, cacheFile, true);
+                    readAndWriteTrack(extractor, mediaMuxer, info, videoStartTime, endTime, compressedFile, true);
                 }
             } catch (Exception e) {
                 error = true;
@@ -659,13 +660,15 @@ public class MediaController
                 }
                 Log.e("tmessages", "time = " + (System.currentTimeMillis() - time));
             }
-        } else {
-            didWriteData(true, true);
-            return false;
         }
-        didWriteData(true, error);
+        else {
+            didWriteData(true, true);
+            return null;
+        }
 
+        didWriteData (true, error);
         inputFile.delete();
-        return true;
+
+        return compressedFile.getPath();
     }
 }

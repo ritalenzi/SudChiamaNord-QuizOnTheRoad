@@ -139,7 +139,14 @@ public class SendDataOps implements ConfigurableOps, GenericAsyncTaskOps<Void, I
 
         if (mTest.equals (Test.video)) {
             Log.i (TAG, "Compressing the video before sending it");
-            MediaController.getInstance().convertVideo (mPathname);
+            String compressedFile = MediaController.getInstance().convertVideo (mPathname);
+            if (compressedFile != null) {
+                mFileUri = Uri.parse (compressedFile);
+                Log.i (TAG, "Sending compressed file!");
+            }
+            else {
+                Log.i (TAG, "Impossible to compress the file - sending the original one");
+            }
         }
 
         return Proxy.doFileUpload (mSessionKey, mFileUri, mFilename, mIdInd, this);

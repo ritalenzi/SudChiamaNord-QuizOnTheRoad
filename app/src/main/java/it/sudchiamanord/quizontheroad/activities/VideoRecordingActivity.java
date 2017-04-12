@@ -353,13 +353,15 @@ public class VideoRecordingActivity extends SendingActivity
         OutputStream out = new FileOutputStream (dstFile);
         byte[] buf = new byte[1024];
         int len;
+        int videoSize = 0;
         while ((len = in.read(buf)) > 0) {
             out.write (buf, 0, len);
+            videoSize += len;
         }
         in.close();
         out.close();
 
-        Log.d (TAG, "File text length " + dstFile.length() + " path " + dstFile.getAbsolutePath());
+        Log.d (TAG, "File text length " + videoSize + " path " + dstFile.getAbsolutePath());
 
         return dstFile;
     }
