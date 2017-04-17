@@ -11,4 +11,5 @@ public interface IntentIds
 
     int CAPTURE_VIDEO_REQUEST = 41;
     int PLAY_VIDEO_REQUEST = 42;
+    int OPEN_VIDEO_REQUEST = 43;
 }

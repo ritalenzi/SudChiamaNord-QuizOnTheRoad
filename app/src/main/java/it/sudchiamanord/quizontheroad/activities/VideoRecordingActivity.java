@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -125,7 +126,9 @@ public class VideoRecordingActivity extends SendingActivity
                     return;
                 }
 
-                // TODO: open video - look at MainActivity of VideoCompressor inside onCreate()
+                Intent intent = new Intent (Intent.ACTION_GET_CONTENT);
+                intent.setType ("video/*");
+                startActivityForResult (intent, IntentIds.OPEN_VIDEO_REQUEST);
             }
         });
 
@@ -215,56 +218,84 @@ public class VideoRecordingActivity extends SendingActivity
         super.onSaveInstanceState (savedInstanceState);
     }
 
-    private void recordVideo()
-    {
-        Intent captureVideoIntent = new Intent (MediaStore.ACTION_VIDEO_CAPTURE);
-        captureVideoIntent.putExtra (MediaStore.Video.Media.MIME_TYPE, VIDEO_TYPE);
-        captureVideoIntent.putExtra (MediaStore.EXTRA_VIDEO_QUALITY, 0);
-
-        File videoFile = null;
-        try {
-            videoFile = createEmptyVideoFile (Consts.appFolder);
-        }
-        catch (IOException e) {
-            Log.e (TAG, "Impossible to save video", e);
-            Toast.makeText (this, R.string.errorSavingVideo, Toast.LENGTH_SHORT).show();
-            mFilePath = null;
-            mFileName = null;
-            return;
-        }
-
-        mFilePath = videoFile.getAbsolutePath();
-        mFileName = videoFile.getName();
-//        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, Uri.fromFile (videoFile));
-        Uri videoURI = FileProvider.getUriForFile (this,
-                getApplicationContext().getPackageName() + ".provider", videoFile);
-        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, videoURI);
-        if (captureVideoIntent.resolveActivity (getPackageManager()) != null) {
-            startActivityForResult (captureVideoIntent, IntentIds.CAPTURE_VIDEO_REQUEST);
-        }
-    }
-
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent intent)
     {
-        if (requestCode == IntentIds.CAPTURE_VIDEO_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                mPlayVideo.setEnabled (true);
-                mUploadVideo.setEnabled (true);
-                mUploadVideo.setVisibility (View.VISIBLE);
+        Uri uri = intent.getData();
+        Log.i (TAG, uri.toString());
+        Log.i (TAG, uri.getPath());
 
-                Bitmap bMap = ThumbnailUtils.createVideoThumbnail (new File (mFilePath).getAbsolutePath(),
-                        MediaStore.Video.Thumbnails.MICRO_KIND);
-                mVideoPreview.setImageBitmap (bMap);
-            }
-            else {
-                mFilePath = null;
-                mFileName = null;
+        File videoFile;
 
-                mPlayVideo.setEnabled (false);
-                mUploadVideo.setEnabled (false);
-                mUploadVideo.setVisibility (View.INVISIBLE);
-            }
+        switch (requestCode) {
+            case IntentIds.CAPTURE_VIDEO_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    videoFile = new File (uri.getPath());
+                    //http://stackoverflow.com/questions/38716408/why-is-uri-path-not-working-with-file
+                    if (!videoFile.exists()) {
+                        Log.e (TAG, "The video file does not exists");
+                        return;
+                    }
+                    mFilePath = videoFile.getAbsolutePath();
+                    mFileName = videoFile.getName();
+
+                    mPlayVideo.setEnabled (true);
+                    mUploadVideo.setEnabled (true);
+                    mUploadVideo.setVisibility (View.VISIBLE);
+
+                    Bitmap bMap = ThumbnailUtils.createVideoThumbnail (new File (mFilePath).getAbsolutePath(),
+                            MediaStore.Video.Thumbnails.MINI_KIND);
+                    mVideoPreview.setImageBitmap (bMap);
+                }
+                else {
+                    mFilePath = null;
+                    mFileName = null;
+
+                    mPlayVideo.setEnabled (false);
+                    mUploadVideo.setEnabled (false);
+                    mUploadVideo.setVisibility (View.INVISIBLE);
+                }
+                break;
+
+            case IntentIds.OPEN_VIDEO_REQUEST:
+                if (uri == null) {
+                    return;
+                }
+
+                Cursor cursor = getContentResolver().query (uri, null, null, null, null, null);
+                try {
+                    if ((cursor != null) && (cursor.moveToFirst())) {
+                        videoFile = new File (uri.getPath());
+                        if (!videoFile.exists()) {
+                            Log.e (TAG, "The video file does not exists");
+                            return;
+                        }
+                        mFilePath = videoFile.getAbsolutePath();
+                        mFileName = videoFile.getName();
+
+                        mPlayVideo.setEnabled (true);
+                        mUploadVideo.setEnabled (true);
+                        mUploadVideo.setVisibility (View.VISIBLE);
+
+                        Bitmap bMap = ThumbnailUtils.createVideoThumbnail (new File (mFilePath).getAbsolutePath(),
+                                MediaStore.Video.Thumbnails.MINI_KIND);
+                        mVideoPreview.setImageBitmap (bMap);
+                    }
+                    else {
+                        mFilePath = null;
+                        mFileName = null;
+
+                        mPlayVideo.setEnabled (false);
+                        mUploadVideo.setEnabled (false);
+                        mUploadVideo.setVisibility (View.INVISIBLE);
+                    }
+                }
+                finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                }
+                break;
         }
     }
 
@@ -304,6 +335,34 @@ public class VideoRecordingActivity extends SendingActivity
                 else {
                     Toast.makeText (this, R.string.cameraPermissionDenied, Toast.LENGTH_SHORT).show();
                 }
+        }
+    }
+
+    private void recordVideo()
+    {
+        Intent captureVideoIntent = new Intent (MediaStore.ACTION_VIDEO_CAPTURE);
+        captureVideoIntent.putExtra (MediaStore.Video.Media.MIME_TYPE, VIDEO_TYPE);
+        captureVideoIntent.putExtra (MediaStore.EXTRA_VIDEO_QUALITY, 0);
+
+        File videoFile = null;
+        try {
+            videoFile = createEmptyVideoFile (Consts.appFolder);
+        }
+        catch (IOException e) {
+            Log.e (TAG, "Impossible to save video", e);
+            Toast.makeText (this, R.string.errorSavingVideo, Toast.LENGTH_SHORT).show();
+            mFilePath = null;
+            mFileName = null;
+            return;
+        }
+
+//        mFilePath = videoFile.getAbsolutePath();
+//        mFileName = videoFile.getName();
+        Uri videoURI = FileProvider.getUriForFile (this,
+                getApplicationContext().getPackageName() + ".provider", videoFile);
+        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, videoURI);
+        if (captureVideoIntent.resolveActivity (getPackageManager()) != null) {
+            startActivityForResult (captureVideoIntent, IntentIds.CAPTURE_VIDEO_REQUEST);
         }
     }
 
