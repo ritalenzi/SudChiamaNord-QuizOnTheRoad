@@ -3,6 +3,7 @@ package it.sudchiamanord.quizontheroad.utils;
 public interface Consts
 {
     String appFolder = "/QuizOnTheRoad";
+    String tempDir = "/Temp/";
 
     interface Actions
     {

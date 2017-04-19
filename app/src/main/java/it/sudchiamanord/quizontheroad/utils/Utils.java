@@ -18,12 +18,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Locale;
 
 
 public class Utils
 {
     private static final String TAG = Utils.class.getSimpleName();
+
+    public static void createApplicationFolder()
+    {
+        File f = new File (Environment.getExternalStorageDirectory(), File.separator + Consts.appFolder);
+        f.mkdirs();
+        f = new File (Environment.getExternalStorageDirectory(), File.separator + Consts.appFolder +
+                Consts.tempDir);
+        f.mkdirs();
+    }
 
     public static Uri createDirectoryAndSaveFile (Context context, Bitmap imageToSave,
                                                   String fileName, String directoryPathname)
@@ -38,15 +48,16 @@ public class Utils
             directory.mkdirs();
         }
 
-        File file = new File(directory, getTemporaryFilename (fileName));
+        File file = new File (directory, getTemporaryFilename (fileName));
         if (file.exists()) {
             file.delete();
         }
 
+        FileOutputStream os = null;
         try {
-            FileOutputStream outputStream = new FileOutputStream(file);
-            imageToSave.compress (Bitmap.CompressFormat.JPEG, 100, outputStream);
-            outputStream.flush();
+            os = new FileOutputStream (file);
+            imageToSave.compress (Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
         }
         catch (Exception e) {
             Log.e (TAG, "Error in saving the image on the device", e);
@@ -93,9 +104,45 @@ public class Utils
         return appDir.getAbsolutePath();
     }
 
+    public static File saveTempFile (String fileName, Context context, Uri uri)
+    {
+
+        File mFile = null;
+        ContentResolver resolver = context.getContentResolver();
+        InputStream in = null;
+        FileOutputStream out = null;
+
+        try {
+            in = resolver.openInputStream (uri);
+
+            mFile = new File (
+                    Environment.getExternalStorageDirectory().getPath() + File.separator +
+                            Consts.appFolder +
+                            Consts.tempDir, fileName);
+
+            out = new FileOutputStream (mFile, false);
+            byte[] buffer = new byte[1024];
+
+            int read;
+            while ((read = in.read (buffer)) != -1) {
+                out.write (buffer, 0, read);
+            }
+
+            out.flush();
+        }
+        catch (IOException e) {
+            Log.e (TAG, "", e);
+        }
+        finally {
+            safeClose (in);
+            safeClose (out);
+        }
+        return mFile;
+    }
+
     public static String convertStreamToString (InputStream is)
     {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader (new InputStreamReader (is));
         StringBuilder sb = new StringBuilder();
 
         String line = null;
@@ -109,14 +156,31 @@ public class Utils
             return null;
         }
         finally {
-            try {
-                is.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            safeClose (is);
         }
         return sb.toString();
+    }
+
+    public static void safeClose (InputStream in)
+    {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+                Log.e(TAG, "", e);
+            }
+        }
+    }
+
+    public static void safeClose (OutputStream out)
+    {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                Log.e(TAG, "", e);
+            }
+        }
     }
 
     public static boolean isServiceRunning (Context context, Class<?> serviceClass)

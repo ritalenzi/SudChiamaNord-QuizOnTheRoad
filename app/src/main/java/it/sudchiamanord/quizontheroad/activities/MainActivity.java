@@ -18,6 +18,7 @@ import it.sudchiamanord.quizontheroad.operations.results.ActiveMatchesResult;
 import it.sudchiamanord.quizontheroad.utils.GenericActivity;
 import it.sudchiamanord.quizontheroad.utils.RingProgressDialog;
 import it.sudchiamanord.quizontheroad.utils.Tags;
+import it.sudchiamanord.quizontheroad.utils.Utils;
 
 public class MainActivity extends GenericActivity<ActiveMatchesOps>
 {
@@ -30,6 +31,7 @@ public class MainActivity extends GenericActivity<ActiveMatchesOps>
         setContentView (R.layout.activity_main);
 
         mOpProgressDialog = new RingProgressDialog (MainActivity.this);
+        Utils.createApplicationFolder();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById (R.id.fab);
         fab.setOnClickListener (new View.OnClickListener() {

@@ -11,6 +11,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -225,53 +226,25 @@ public class VideoRecordingActivity extends SendingActivity
         Log.i (TAG, uri.toString());
         Log.i (TAG, uri.getPath());
 
-        File videoFile;
+        File tempVideoFile;
 
         switch (requestCode) {
             case IntentIds.CAPTURE_VIDEO_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    videoFile = new File (uri.getPath());
-                    //http://stackoverflow.com/questions/38716408/why-is-uri-path-not-working-with-file
-                    if (!videoFile.exists()) {
-                        Log.e (TAG, "The video file does not exists");
-                        return;
-                    }
-                    mFilePath = videoFile.getAbsolutePath();
-                    mFileName = videoFile.getName();
-
-                    mPlayVideo.setEnabled (true);
-                    mUploadVideo.setEnabled (true);
-                    mUploadVideo.setVisibility (View.VISIBLE);
-
-                    Bitmap bMap = ThumbnailUtils.createVideoThumbnail (new File (mFilePath).getAbsolutePath(),
-                            MediaStore.Video.Thumbnails.MINI_KIND);
-                    mVideoPreview.setImageBitmap (bMap);
-                }
-                else {
-                    mFilePath = null;
-                    mFileName = null;
-
-                    mPlayVideo.setEnabled (false);
-                    mUploadVideo.setEnabled (false);
-                    mUploadVideo.setVisibility (View.INVISIBLE);
-                }
-                break;
-
             case IntentIds.OPEN_VIDEO_REQUEST:
-                if (uri == null) {
-                    return;
-                }
-
                 Cursor cursor = getContentResolver().query (uri, null, null, null, null, null);
                 try {
                     if ((cursor != null) && (cursor.moveToFirst())) {
-                        videoFile = new File (uri.getPath());
-                        if (!videoFile.exists()) {
+                        String displayName = cursor.getString (
+                                cursor.getColumnIndex (OpenableColumns.DISPLAY_NAME));
+                        Log.i (TAG, "Display Name: " + displayName);
+
+                        tempVideoFile = Utils.saveTempFile(displayName, this, uri);
+                        if (!tempVideoFile.exists()) {
                             Log.e (TAG, "The video file does not exists");
                             return;
                         }
-                        mFilePath = videoFile.getAbsolutePath();
-                        mFileName = videoFile.getName();
+                        mFilePath = tempVideoFile.getAbsolutePath();
+                        mFileName = tempVideoFile.getName();
 
                         mPlayVideo.setEnabled (true);
                         mUploadVideo.setEnabled (true);
