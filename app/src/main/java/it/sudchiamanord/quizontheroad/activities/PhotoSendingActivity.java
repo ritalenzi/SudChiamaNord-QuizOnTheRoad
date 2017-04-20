@@ -53,7 +53,7 @@ public class PhotoSendingActivity extends SendingActivity
 
         super.onCreate (savedInstanceState, SendDataOps.class);
 
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent takePictureIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
             File photoFile = null;
             try {
@@ -69,7 +69,7 @@ public class PhotoSendingActivity extends SendingActivity
                 //photoName = photoFile.getName().substring (0, photoFile.getName().lastIndexOf ("."));
                 photoName = photoFile.getName();
                 photoAbsolutePath = photoFile.getAbsolutePath();
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile (photoFile));
                 startActivityForResult(takePictureIntent, IntentIds.REQUEST_TAKE_PHOTO);
             }
         }

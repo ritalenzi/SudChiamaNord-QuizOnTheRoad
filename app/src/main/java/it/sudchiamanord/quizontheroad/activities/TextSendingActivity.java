@@ -1,9 +1,13 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +70,12 @@ public class TextSendingActivity extends SendingActivity
                     return;
                 }
 
+                if (!hasPermissions()) {
+                    Toast.makeText (getApplicationContext(),
+                            R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 try {
                     File f = createTextFile (Consts.appFolder, mMessage.getText().toString());
                     mFilePath = f.getAbsolutePath();
@@ -74,6 +84,7 @@ public class TextSendingActivity extends SendingActivity
                 catch (IOException e) {
                     Toast.makeText (getApplicationContext(), R.string.savingTextFailed,
                             Toast.LENGTH_LONG).show();
+                    Log.e (TAG, "Problem:", e);
                     return;
                 }
 
@@ -88,7 +99,7 @@ public class TextSendingActivity extends SendingActivity
                                         Test.text);
                             }
                         })
-                        .setNegativeButton(R.string.noOption, new DialogInterface.OnClickListener() {
+                        .setNegativeButton (R.string.noOption, new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
                                 dialog.cancel();
                             }
@@ -129,12 +140,40 @@ public class TextSendingActivity extends SendingActivity
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST:
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    mFilePath = Utils.createDirectory (Consts.appFolder);
+                }
+                else {
+                    Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+    private boolean hasPermissions()
+    {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return false;
+        }
+
+        return true;
+    }
+
     private File createTextFile (String appFolder, String text) throws IOException
     {
         String fileName = new SimpleDateFormat ("yyyyMMdd_HHmmss").format (new Date()) + ".txt";
-        File file = new File (Utils.createDirectory(appFolder), fileName);
+        File file = new File (Utils.createDirectory (appFolder), fileName);
         file.createNewFile();
-        OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(file));
+        OutputStreamWriter os = new OutputStreamWriter (new FileOutputStream(file));
         os.write (text);
         os.close();
 
