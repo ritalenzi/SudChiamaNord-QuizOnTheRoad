@@ -108,6 +108,9 @@
     <string name="photoUploadSuccess">Photo successfully uploaded</string>
     <string name="photoUploadFailed">Failed to upload photo</string>
     <string name="confirmPhotoUpload">Are you sure you want to upload this photo? It cannot be changed</string>
+    <string name="takePicture">Take picture</string>
+    <string name="openPicture">Open</string>
+    <string name="uploadPictureButton">Upload</string>
 
     <string name="sendAudio">Send Audio</string>
     <string name="audioDialogTitle">Wait</string>

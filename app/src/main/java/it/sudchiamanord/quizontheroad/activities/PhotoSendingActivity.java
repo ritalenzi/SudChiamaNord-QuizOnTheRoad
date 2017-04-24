@@ -53,6 +53,8 @@ public class PhotoSendingActivity extends SendingActivity
 
         super.onCreate (savedInstanceState, SendDataOps.class);
 
+        setContentView (R.layout.activity_photo);
+
         Intent takePictureIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
             File photoFile = null;

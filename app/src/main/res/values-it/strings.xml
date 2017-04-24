@@ -108,6 +108,9 @@
     <string name="photoUploadSuccess">Foto mandata con successo</string>
     <string name="photoUploadFailed">Impossibile mandare la foto</string>
     <string name="confirmPhotoUpload">Sei sicuro di voler mandare questa foto? Non potra\&#39; piu\&#39; essere cambiata</string>
+    <string name="takePicture">Scatta foto</string>
+    <string name="openPicture">Apri</string>
+    <string name="uploadPictureButton">Invia la foto</string>
 
     <string name="sendAudio">Manda Audio</string>
     <string name="audioDialogTitle">Aspetta</string>
