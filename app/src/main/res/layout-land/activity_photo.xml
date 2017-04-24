@@ -17,8 +17,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/takePicture"
-        android:id="@+id/takePicture"
+        android:text="@string/takePhotoButton"
+        android:id="@+id/takePhoto"
         android:layout_marginTop="37dp"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
@@ -26,37 +26,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/openPicture"
-        android:id="@+id/openPicture"
-        android:layout_below="@+id/takePicture"
-        android:layout_alignRight="@+id/takePicture"
-        android:layout_alignEnd="@+id/takePicture"
-        android:layout_marginRight="13dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginTop="20dp" />
-
     <ImageView
         app:srcCompat="@android:drawable/ic_menu_camera"
-        android:id="@+id/imageView4"
-        android:layout_height="180dp"
-        android:adjustViewBounds="false"
-        android:layout_alignParentTop="true"
-        android:layout_width="wrap_content" />
-
-    <ImageView
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:id="@+id/imageView3"
-        android:layout_height="180dp"
-        android:adjustViewBounds="false"
-        android:layout_alignParentTop="true"
-        android:layout_width="wrap_content" />
-
-    <ImageView
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:id="@+id/picturePreview"
+        android:id="@+id/photoPreview"
         android:adjustViewBounds="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -67,11 +39,21 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/uploadPictureButton"
-        android:id="@+id/uploadPicture"
+        android:text="@string/uploadPhotoButton"
+        android:id="@+id/uploadPhoto"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/openPicture"
-        android:layout_alignStart="@+id/openPicture"
+        android:layout_alignLeft="@+id/openPhoto"
+        android:layout_alignStart="@+id/openPhoto"
         android:layout_marginBottom="22dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/openPhotoButton"
+        android:id="@+id/openPhoto"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/takePhoto"
+        android:layout_alignLeft="@+id/takePhoto"
+        android:layout_alignStart="@+id/takePhoto" />
 
 </RelativeLayout>

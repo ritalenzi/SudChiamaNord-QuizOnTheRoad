@@ -1,16 +1,25 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -40,6 +49,11 @@ public class PhotoSendingActivity extends SendingActivity
     private String mSessionKey;
     private String mIdInd;  // Id of the current clue
 
+    private Button mTakePhoto;
+    private Button mOpenPhoto;
+    private ImageView mPhotoPreview;
+    private Button mUploadPhoto;
+
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
@@ -55,26 +69,78 @@ public class PhotoSendingActivity extends SendingActivity
 
         setContentView (R.layout.activity_photo);
 
-        Intent takePictureIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile (Consts.appFolder);
+        mTakePhoto = (Button) findViewById (R.id.takePhoto);
+        mTakePhoto.setOnClickListener (new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v)
+            {
+                if (!hasPermissions()) {
+                    Toast.makeText (getApplicationContext(),
+                            R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                takePicture();
             }
-            catch (IOException ex) {
-                Log.e (TAG, "Error: ", ex);
-                Toast.makeText (getApplicationContext(), "Problem in saving data on the SD card",
-                        Toast.LENGTH_SHORT).show();
-                return;
+        });
+
+        mOpenPhoto = (Button) findViewById (R.id.openPhoto);
+        mOpenPhoto.setEnabled (false);
+        mOpenPhoto.setOnClickListener (new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v)
+            {
+                if (!hasPermissions()) {
+                    Toast.makeText (getApplicationContext(),
+                            R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent (Intent.ACTION_GET_CONTENT);
+                intent.setType ("image/*");
+                startActivityForResult (intent, IntentIds.OPEN_PHOTO_REQUEST);
             }
-            if (photoFile != null) {
-                //photoName = photoFile.getName().substring (0, photoFile.getName().lastIndexOf ("."));
-                photoName = photoFile.getName();
-                photoAbsolutePath = photoFile.getAbsolutePath();
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile (photoFile));
-                startActivityForResult(takePictureIntent, IntentIds.REQUEST_TAKE_PHOTO);
+        });
+
+
+        mUploadPhoto = (Button) findViewById (R.id.uploadPhoto);
+        mUploadPhoto.setEnabled (false);
+        mUploadPhoto.setVisibility (View.INVISIBLE);
+        mUploadPhoto.setOnClickListener (new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v)
+            {
+                if ((photoName == null) || (photoAbsolutePath == null)) {
+                    Toast.makeText (getApplicationContext(), R.string.noVideoRecorded,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder (PhotoSendingActivity.this);
+                builder.setMessage (R.string.confirmPhotoUpload)
+                        .setCancelable (false)
+                        .setPositiveButton (R.string.yesOption, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick (final DialogInterface dialog, final int id)
+                            {
+                                compressImage();
+                                getOps().sendData (mSessionKey, photoName, photoAbsolutePath, mIdInd,
+                                        Test.photo);
+                            }
+                        })
+                        .setNegativeButton (R.string.noOption, new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        });
+                final AlertDialog alert = builder.create();
+                alert.show();
             }
-        }
+        });
     }
 
     @Override
@@ -108,31 +174,143 @@ public class PhotoSendingActivity extends SendingActivity
     }
 
     @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST:
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    photoAbsolutePath = Utils.createDirectory (Consts.appFolder);
+                }
+                else {
+                    Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+
+            case Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST:
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    photoAbsolutePath = Utils.createDirectory (Consts.appFolder);
+                }
+                else {
+                    Toast.makeText (this, R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+
+            case Tags.CAMERA_PERMISSION_REQUEST:
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    takePicture();
+                }
+                else {
+                    Toast.makeText (this, R.string.cameraPermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+    @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent intent)
     {
-        if (requestCode == IntentIds.REQUEST_TAKE_PHOTO) {
-            if (resultCode == RESULT_OK) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder (PhotoSendingActivity.this);
-                builder.setMessage (R.string.confirmPhotoUpload)
-                        .setCancelable (false)
-                        .setPositiveButton (R.string.yesOption, new DialogInterface.OnClickListener()
-                        {
-                            public void onClick (final DialogInterface dialog, final int id)
-                            {
-                                compressImage();
-                                getOps().sendData (mSessionKey, photoName, photoAbsolutePath, mIdInd,
-                                        Test.photo);
-                            }
-                        })
-                        .setNegativeButton(R.string.noOption, new DialogInterface.OnClickListener() {
-                            public void onClick(final DialogInterface dialog, final int id) {
-                                dialog.cancel();
-                                finish();
-                            }
-                        });
-                final AlertDialog alert = builder.create();
-                alert.show();
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        Uri uri = intent.getData();
+        Log.i (TAG, uri.toString());    // TODO: REMOVE
+        Log.i (TAG, uri.getPath());     // TODO: REMOVE
+
+        File tempPhotoFile;
+
+        switch (requestCode) {
+            case IntentIds.CAPTURE_PHOTO_REQUEST:
+            case IntentIds.OPEN_PHOTO_REQUEST:
+                Cursor cursor = getContentResolver().query (uri, null, null, null, null, null);
+                try {
+                    if ((cursor != null) && (cursor.moveToFirst())) {
+                        String displayName = cursor.getString (
+                                cursor.getColumnIndex (OpenableColumns.DISPLAY_NAME));
+                        Log.i (TAG, "Display Name: " + displayName);
+
+                        tempPhotoFile = Utils.saveTempFile (displayName, this, uri);
+                        if (!tempPhotoFile.exists()) {
+                            Log.e (TAG, "The photo file does not exists");
+                            return;
+                        }
+                        photoAbsolutePath = tempPhotoFile.getAbsolutePath();
+                        photoName = tempPhotoFile.getName();
+
+                        mUploadPhoto.setEnabled (true);
+                        mUploadPhoto.setVisibility (View.VISIBLE);
+
+                        Bitmap bMap = BitmapFactory.decodeFile (tempPhotoFile.getAbsolutePath());
+                        mPhotoPreview.setImageBitmap (bMap);
+                    }
+                    else {
+                        photoAbsolutePath = null;
+                        photoName = null;
+                        mPhotoPreview.setImageDrawable (null);
+
+                        mUploadPhoto.setEnabled (false);
+                        mUploadPhoto.setVisibility (View.INVISIBLE);
+                    }
+                }
+                finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                }
+                break;
+        }
+    }
+
+    private boolean hasPermissions()
+    {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return false;
+        }
+
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return false;
+        }
+
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.CAMERA},
+                    Tags.CAMERA_PERMISSION_REQUEST);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void takePicture()
+    {
+        Intent takePictureIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
+            File photoFile;
+            try {
+                photoFile = createImageFile (Consts.appFolder);
             }
+            catch (IOException ex) {
+                Log.e (TAG, "Error: ", ex);
+                Toast.makeText (getApplicationContext(), R.string.sdcardError,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            photoName = photoFile.getName();
+            photoAbsolutePath = photoFile.getAbsolutePath();
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile (photoFile));
+            startActivityForResult (takePictureIntent, IntentIds.CAPTURE_PHOTO_REQUEST);
         }
     }
 

@@ -222,9 +222,13 @@ public class VideoRecordingActivity extends SendingActivity
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent intent)
     {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
         Uri uri = intent.getData();
-        Log.i (TAG, uri.toString());
-        Log.i (TAG, uri.getPath());
+        Log.i (TAG, uri.toString());    // TODO: REMOVE
+        Log.i (TAG, uri.getPath());     // TODO: REMOVE
 
         File tempVideoFile;
 
@@ -257,6 +261,7 @@ public class VideoRecordingActivity extends SendingActivity
                     else {
                         mFilePath = null;
                         mFileName = null;
+                        mVideoPreview.setImageDrawable (null);
 
                         mPlayVideo.setEnabled (false);
                         mUploadVideo.setEnabled (false);

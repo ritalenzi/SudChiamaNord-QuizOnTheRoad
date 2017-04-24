@@ -38,6 +38,8 @@
     <string name="readExternalStoragePermissionDenied">Impossible to access the memory of the phone. Provide the necessary permissions or it will be impossible to keep playing</string>
     <string name="cameraPermissionDenied">Impossible to take pictures or capture video. Provide the necessary permissions or it will be impossible to keep playing</string>
 
+    <string name="sdcardError">Impossible to write on the sd card</string>
+
     <string name="loginFailed">Impossible to login</string>
     <string name="nullUserAndPwMsg">Specify username and password</string>
     <string name="nullIMEIMsg">Impossible to read the device unique code</string>
@@ -108,9 +110,10 @@
     <string name="photoUploadSuccess">Photo successfully uploaded</string>
     <string name="photoUploadFailed">Failed to upload photo</string>
     <string name="confirmPhotoUpload">Are you sure you want to upload this photo? It cannot be changed</string>
-    <string name="takePicture">Take picture</string>
-    <string name="openPicture">Open</string>
-    <string name="uploadPictureButton">Upload</string>
+    <string name="takePhotoButton">Capture</string>
+    <string name="openPhotoButton">Open</string>
+    <string name="uploadPhotoButton">Upload</string>
+    <string name="noPhotoCaptured">Capture or open a photo first!</string>
 
     <string name="sendAudio">Send Audio</string>
     <string name="audioDialogTitle">Wait</string>

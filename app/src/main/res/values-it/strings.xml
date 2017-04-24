@@ -38,6 +38,8 @@
     <string name="readExternalStoragePermissionDenied">Impossibile accedere alla memoria del telefono. Fornire i permessi necessari o sara\' impossibile continuare la partita</string>
     <string name="cameraPermissionDenied">Impossibile usare la fotocamera per foto o video. Fornire i permessi necessari o sara\' impossibile continuare la partita</string>
 
+    <string name="sdcardError">Impossibile scrivere sulla sd card</string>
+
     <string name="loginFailed">Impossibile effettuare il login</string>
     <string name="nullUserAndPwMsg">Inserire nome utente e password</string>
     <string name="nullIMEIMsg">Impossibile leggere il codice univoco del telefono</string>
@@ -108,9 +110,10 @@
     <string name="photoUploadSuccess">Foto mandata con successo</string>
     <string name="photoUploadFailed">Impossibile mandare la foto</string>
     <string name="confirmPhotoUpload">Sei sicuro di voler mandare questa foto? Non potra\&#39; piu\&#39; essere cambiata</string>
-    <string name="takePicture">Scatta foto</string>
-    <string name="openPicture">Apri</string>
-    <string name="uploadPictureButton">Invia la foto</string>
+    <string name="takePhotoButton">Scatta</string>
+    <string name="openPhotoButton">Apri</string>
+    <string name="uploadPhotoButton">Invia la foto</string>
+    <string name="noPhotoCaptured">Nessuna foto selezionata! Scattane una o caricala dalla galleria!</string>
 
     <string name="sendAudio">Manda Audio</string>
     <string name="audioDialogTitle">Aspetta</string>
