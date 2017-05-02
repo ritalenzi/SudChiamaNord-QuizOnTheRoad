@@ -342,6 +342,9 @@ public class VideoRecordingActivity extends SendingActivity
         if (captureVideoIntent.resolveActivity (getPackageManager()) != null) {
             startActivityForResult (captureVideoIntent, IntentIds.CAPTURE_VIDEO_REQUEST);
         }
+        else {
+            Log.e (TAG, "Null \"Action Video Capture\" activity");
+        }
     }
 
     private boolean hasPermissions()

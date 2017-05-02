@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,32 +76,17 @@ public class PhotoSendingActivity extends SendingActivity
             @Override
             public void onClick (View v)
             {
-                if (!hasPermissions()) {
-                    Toast.makeText (getApplicationContext(),
-                            R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 takePicture();
             }
         });
 
         mOpenPhoto = (Button) findViewById (R.id.openPhoto);
-        mOpenPhoto.setEnabled (false);
         mOpenPhoto.setOnClickListener (new View.OnClickListener()
         {
             @Override
             public void onClick (View v)
             {
-                if (!hasPermissions()) {
-                    Toast.makeText (getApplicationContext(),
-                            R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Intent intent = new Intent (Intent.ACTION_GET_CONTENT);
-                intent.setType ("image/*");
-                startActivityForResult (intent, IntentIds.OPEN_PHOTO_REQUEST);
+                openPicture();
             }
         });
 
@@ -182,6 +168,7 @@ public class PhotoSendingActivity extends SendingActivity
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     photoAbsolutePath = Utils.createDirectory (Consts.appFolder);
+                    takePicture();
                 }
                 else {
                     Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
@@ -194,6 +181,7 @@ public class PhotoSendingActivity extends SendingActivity
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     photoAbsolutePath = Utils.createDirectory (Consts.appFolder);
+                    openPicture();
                 }
                 else {
                     Toast.makeText (this, R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
@@ -267,51 +255,60 @@ public class PhotoSendingActivity extends SendingActivity
         }
     }
 
-    private boolean hasPermissions()
+    private void takePicture()
     {
         if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
-            return false;
-        }
-
-        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST);
-            return false;
+            return;
         }
 
         if (ContextCompat.checkSelfPermission (this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.CAMERA},
                     Tags.CAMERA_PERMISSION_REQUEST);
-            return false;
+            return;
         }
 
-        return true;
-    }
-
-    private void takePicture()
-    {
         Intent takePictureIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File photoFile;
+        try {
+            photoFile = createImageFile (Consts.appFolder);
+        }
+        catch (IOException ex) {
+            Log.e (TAG, "Error: ", ex);
+            Toast.makeText (getApplicationContext(), R.string.sdcardError,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+//            photoName = photoFile.getName();
+//            photoAbsolutePath = photoFile.getAbsolutePath();
+        Uri photoURI = FileProvider.getUriForFile (this,
+                getApplicationContext().getPackageName() + ".provider", photoFile);
+        takePictureIntent.putExtra (MediaStore.EXTRA_OUTPUT, photoURI);
+        Log.i (TAG, "Photo URI: " + photoURI);
         if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
-            File photoFile;
-            try {
-                photoFile = createImageFile (Consts.appFolder);
-            }
-            catch (IOException ex) {
-                Log.e (TAG, "Error: ", ex);
-                Toast.makeText (getApplicationContext(), R.string.sdcardError,
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-            photoName = photoFile.getName();
-            photoAbsolutePath = photoFile.getAbsolutePath();
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile (photoFile));
             startActivityForResult (takePictureIntent, IntentIds.CAPTURE_PHOTO_REQUEST);
         }
+        else {
+            Log.e (TAG, "Null \"Action Image Capture\" activity");
+        }
+    }
+
+    private void openPicture()
+    {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return;
+        }
+
+        Intent intent = new Intent (Intent.ACTION_GET_CONTENT);
+        intent.setType ("image/*");
+        startActivityForResult (intent, IntentIds.OPEN_PHOTO_REQUEST);
     }
 
     private File createImageFile (String appFolder) throws IOException
