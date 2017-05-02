@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -55,6 +56,8 @@ public class PhotoSendingActivity extends SendingActivity
     private ImageView mPhotoPreview;
     private Button mUploadPhoto;
 
+    private Uri picUri;
+
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
@@ -69,6 +72,8 @@ public class PhotoSendingActivity extends SendingActivity
         super.onCreate (savedInstanceState, SendDataOps.class);
 
         setContentView (R.layout.activity_photo);
+
+        mPhotoPreview = (ImageView) findViewById (R.id.photoPreview);
 
         mTakePhoto = (Button) findViewById (R.id.takePhoto);
         mTakePhoto.setOnClickListener (new View.OnClickListener()
@@ -89,7 +94,6 @@ public class PhotoSendingActivity extends SendingActivity
                 openPicture();
             }
         });
-
 
         mUploadPhoto = (Button) findViewById (R.id.uploadPhoto);
         mUploadPhoto.setEnabled (false);
@@ -201,13 +205,40 @@ public class PhotoSendingActivity extends SendingActivity
     }
 
     @Override
+    protected void onSaveInstanceState (Bundle outState)
+    {
+        super.onSaveInstanceState (outState);
+        Log.e (TAG, "calling onSaveInstanceState() - picUri: " + picUri);
+
+        outState.putParcelable ("picUri", picUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState (@NonNull Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState (savedInstanceState);
+        Log.e (TAG, "calling onRestoreInstanceState()");
+
+        picUri = savedInstanceState.getParcelable ("picUri");
+        Log.e (TAG, "picUri: " + picUri);
+
+    }
+
+    @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent intent)
     {
         if (resultCode != RESULT_OK) {
             return;
         }
 
-        Uri uri = intent.getData();
+        //Uri uri = intent.getData();
+        Uri uri;
+        if ((intent == null) || (intent.getData() == null)) {
+            uri = picUri;
+        }
+        else {
+            uri = intent.getData();
+        }
         Log.i (TAG, uri.toString());    // TODO: REMOVE
         Log.i (TAG, uri.getPath());     // TODO: REMOVE
 
@@ -224,6 +255,7 @@ public class PhotoSendingActivity extends SendingActivity
                         Log.i (TAG, "Display Name: " + displayName);
 
                         tempPhotoFile = Utils.saveTempFile (displayName, this, uri);
+
                         if (!tempPhotoFile.exists()) {
                             Log.e (TAG, "The photo file does not exists");
                             return;
@@ -235,6 +267,7 @@ public class PhotoSendingActivity extends SendingActivity
                         mUploadPhoto.setVisibility (View.VISIBLE);
 
                         Bitmap bMap = BitmapFactory.decodeFile (tempPhotoFile.getAbsolutePath());
+                        //Bitmap bMap = MediaStore.Images.Media.getBitmap (this.getContentResolver(), uri);
                         mPhotoPreview.setImageBitmap (bMap);
                     }
                     else {
@@ -285,10 +318,10 @@ public class PhotoSendingActivity extends SendingActivity
         }
 //            photoName = photoFile.getName();
 //            photoAbsolutePath = photoFile.getAbsolutePath();
-        Uri photoURI = FileProvider.getUriForFile (this,
+        picUri = FileProvider.getUriForFile (this,
                 getApplicationContext().getPackageName() + ".provider", photoFile);
-        takePictureIntent.putExtra (MediaStore.EXTRA_OUTPUT, photoURI);
-        Log.i (TAG, "Photo URI: " + photoURI);
+        takePictureIntent.putExtra (MediaStore.EXTRA_OUTPUT, picUri);
+        Log.i (TAG, "Photo URI: " + picUri);
         if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
             startActivityForResult (takePictureIntent, IntentIds.CAPTURE_PHOTO_REQUEST);
         }
