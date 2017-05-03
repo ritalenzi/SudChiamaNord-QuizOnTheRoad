@@ -50,6 +50,7 @@ public class VideoRecordingActivity extends SendingActivity
 
     private String mFilePath = null;
     private String mFileName = null;
+    private Uri mVideoURI;
     //private String mAppFolder;
 
     private Button mPlayVideo;
@@ -105,12 +106,6 @@ public class VideoRecordingActivity extends SendingActivity
             @Override
             public void onClick (View v)
             {
-                if (!hasPermissions()) {
-                    Toast.makeText (getApplicationContext(),
-                            R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 recordVideo();
             }
         });
@@ -121,15 +116,7 @@ public class VideoRecordingActivity extends SendingActivity
             @Override
             public void onClick (View v)
             {
-                if (!hasPermissions()) {
-                    Toast.makeText (getApplicationContext(),
-                            R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Intent intent = new Intent (Intent.ACTION_GET_CONTENT);
-                intent.setType ("video/*");
-                startActivityForResult (intent, IntentIds.OPEN_VIDEO_REQUEST);
+                openVideo();
             }
         });
 
@@ -208,6 +195,7 @@ public class VideoRecordingActivity extends SendingActivity
 
         mFilePath = savedInstanceState.getString (Tags.RESOURCE_ABSOLUTE_PATH);
         mFileName = savedInstanceState.getString (Tags.RESOURCE_NAME);
+        mVideoURI = savedInstanceState.getParcelable (Tags.RESOURCE_URI);
     }
 
     @Override
@@ -215,6 +203,7 @@ public class VideoRecordingActivity extends SendingActivity
     {
         savedInstanceState.putString (Tags.RESOURCE_ABSOLUTE_PATH, mFilePath);
         savedInstanceState.putString (Tags.RESOURCE_NAME, mFileName);
+        savedInstanceState.putParcelable (Tags.RESOURCE_URI, mVideoURI);
 
         super.onSaveInstanceState (savedInstanceState);
     }
@@ -226,7 +215,13 @@ public class VideoRecordingActivity extends SendingActivity
             return;
         }
 
-        Uri uri = intent.getData();
+        Uri uri;
+        if ((intent == null) || (intent.getData() == null)) {
+            uri = mVideoURI;
+        }
+        else {
+            uri = intent.getData();
+        }
         Log.i (TAG, uri.toString());    // TODO: REMOVE
         Log.i (TAG, uri.getPath());     // TODO: REMOVE
 
@@ -286,6 +281,7 @@ public class VideoRecordingActivity extends SendingActivity
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     mFilePath = Utils.createDirectory (Consts.appFolder);
+                    recordVideo();
                 }
                 else {
                     Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
@@ -298,6 +294,7 @@ public class VideoRecordingActivity extends SendingActivity
                 if ((grantResults.length > 0) &&
                         (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     mFilePath = Utils.createDirectory (Consts.appFolder);
+                    openVideo();
                 }
                 else {
                     Toast.makeText (this, R.string.readExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
@@ -316,8 +313,36 @@ public class VideoRecordingActivity extends SendingActivity
         }
     }
 
+    private void openVideo()
+    {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return;
+        }
+
+        Intent intent = new Intent (Intent.ACTION_GET_CONTENT);
+        intent.setType ("video/*");
+        startActivityForResult (intent, IntentIds.OPEN_VIDEO_REQUEST);
+    }
+
     private void recordVideo()
     {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.CAMERA},
+                    Tags.CAMERA_PERMISSION_REQUEST);
+            return;
+        }
+
         Intent captureVideoIntent = new Intent (MediaStore.ACTION_VIDEO_CAPTURE);
         captureVideoIntent.putExtra (MediaStore.Video.Media.MIME_TYPE, VIDEO_TYPE);
         captureVideoIntent.putExtra (MediaStore.EXTRA_VIDEO_QUALITY, 0);
@@ -336,41 +361,15 @@ public class VideoRecordingActivity extends SendingActivity
 
 //        mFilePath = videoFile.getAbsolutePath();
 //        mFileName = videoFile.getName();
-        Uri videoURI = FileProvider.getUriForFile (this,
+        mVideoURI = FileProvider.getUriForFile (this,
                 getApplicationContext().getPackageName() + ".provider", videoFile);
-        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, videoURI);
+        captureVideoIntent.putExtra (MediaStore.EXTRA_OUTPUT, mVideoURI);
         if (captureVideoIntent.resolveActivity (getPackageManager()) != null) {
             startActivityForResult (captureVideoIntent, IntentIds.CAPTURE_VIDEO_REQUEST);
         }
         else {
             Log.e (TAG, "Null \"Action Video Capture\" activity");
         }
-    }
-
-    private boolean hasPermissions()
-    {
-        if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
-            return false;
-        }
-
-        if (ContextCompat.checkSelfPermission (this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    Tags.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST);
-            return false;
-        }
-
-        if (ContextCompat.checkSelfPermission (this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.CAMERA},
-                    Tags.CAMERA_PERMISSION_REQUEST);
-            return false;
-        }
-
-        return true;
     }
 
     private File createEmptyVideoFile (String appFolder) throws IOException

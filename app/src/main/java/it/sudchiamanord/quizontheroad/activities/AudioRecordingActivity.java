@@ -1,12 +1,16 @@
 package it.sudchiamanord.quizontheroad.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -205,6 +209,34 @@ public class AudioRecordingActivity extends SendingActivity
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST:
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    startRecording();
+                }
+                else {
+                    Toast.makeText (this, R.string.writeExternalStoragePermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+
+            case Tags.RECORD_AUDIO_PERMISSION_REQUEST:
+                if ((grantResults.length > 0) &&
+                        (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    startRecording();
+                }
+                else {
+                    Toast.makeText (this, R.string.recordAudioPermissionDenied, Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+        }
+    }
+
     private String buildCompleteName (String path, String name)
     {
         return path + "/" + name;
@@ -269,6 +301,20 @@ public class AudioRecordingActivity extends SendingActivity
 
     private void startRecording()
     {
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Tags.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission (this, Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions (this, new String[]{Manifest.permission.RECORD_AUDIO},
+                    Tags.RECORD_AUDIO_PERMISSION_REQUEST);
+            return;
+        }
+
 //        mReadyForUpload = false;
         mUploadAudio.setEnabled (false);
         mPlayButton.setEnabled (false);
@@ -276,7 +322,7 @@ public class AudioRecordingActivity extends SendingActivity
         mUploadAudio.setVisibility (View.INVISIBLE);
 
         mRecorder = new MediaRecorder();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setAudioSource (MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat (MediaRecorder.OutputFormat.THREE_GPP);
 
         mFileName = UUID.randomUUID().toString() + ".3gp";

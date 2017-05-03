@@ -56,7 +56,7 @@ public class PhotoSendingActivity extends SendingActivity
     private ImageView mPhotoPreview;
     private Button mUploadPhoto;
 
-    private Uri picUri;
+    private Uri mPicUri;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -208,9 +208,9 @@ public class PhotoSendingActivity extends SendingActivity
     protected void onSaveInstanceState (Bundle outState)
     {
         super.onSaveInstanceState (outState);
-        Log.e (TAG, "calling onSaveInstanceState() - picUri: " + picUri);
+        Log.e (TAG, "calling onSaveInstanceState() - picUri: " + mPicUri);
 
-        outState.putParcelable ("picUri", picUri);
+        outState.putParcelable (Tags.RESOURCE_URI, mPicUri);
     }
 
     @Override
@@ -219,8 +219,8 @@ public class PhotoSendingActivity extends SendingActivity
         super.onRestoreInstanceState (savedInstanceState);
         Log.e (TAG, "calling onRestoreInstanceState()");
 
-        picUri = savedInstanceState.getParcelable ("picUri");
-        Log.e (TAG, "picUri: " + picUri);
+        mPicUri = savedInstanceState.getParcelable (Tags.RESOURCE_URI);
+        Log.e (TAG, "picUri: " + mPicUri);
 
     }
 
@@ -234,7 +234,7 @@ public class PhotoSendingActivity extends SendingActivity
         //Uri uri = intent.getData();
         Uri uri;
         if ((intent == null) || (intent.getData() == null)) {
-            uri = picUri;
+            uri = mPicUri;
         }
         else {
             uri = intent.getData();
@@ -318,10 +318,10 @@ public class PhotoSendingActivity extends SendingActivity
         }
 //            photoName = photoFile.getName();
 //            photoAbsolutePath = photoFile.getAbsolutePath();
-        picUri = FileProvider.getUriForFile (this,
+        mPicUri = FileProvider.getUriForFile (this,
                 getApplicationContext().getPackageName() + ".provider", photoFile);
-        takePictureIntent.putExtra (MediaStore.EXTRA_OUTPUT, picUri);
-        Log.i (TAG, "Photo URI: " + picUri);
+        takePictureIntent.putExtra (MediaStore.EXTRA_OUTPUT, mPicUri);
+        Log.i (TAG, "Photo URI: " + mPicUri);
         if (takePictureIntent.resolveActivity (getPackageManager()) != null) {
             startActivityForResult (takePictureIntent, IntentIds.CAPTURE_PHOTO_REQUEST);
         }
