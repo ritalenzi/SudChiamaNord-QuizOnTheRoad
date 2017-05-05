@@ -38,6 +38,7 @@ public class MainActivity extends GenericActivity<ActiveMatchesOps>
             @Override
             public void onClick (View view) {
                 mDevelCB = (CheckBox) findViewById (R.id.devel_check_box);
+                mDevelCB.setVisibility (View.INVISIBLE);
                 getOps().request (mDevelCB.isChecked());
             }
         });
