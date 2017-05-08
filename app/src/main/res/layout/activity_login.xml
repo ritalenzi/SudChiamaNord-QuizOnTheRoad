@@ -21,16 +21,6 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/loginUser"
-        android:hint="@string/loginUser"
-        android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/loginPassword"
@@ -38,15 +28,6 @@
         android:layout_below="@+id/loginUser"
         android:layout_alignLeft="@+id/loginUser"
         android:layout_alignStart="@+id/loginUser" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loginButton"
-        android:id="@+id/loginButton"
-        android:onClick="login"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -63,10 +44,32 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loginButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="36dp"
-        android:id="@+id/activeMatchesList" />
+        android:id="@+id/activeMatchesList"
+        android:layout_below="@+id/logo"
+        android:layout_alignLeft="@+id/loginUser"
+        android:layout_alignStart="@+id/loginUser"
+        android:layout_marginTop="12dp"
+        android:layout_alignRight="@+id/loginUser"
+        android:layout_alignEnd="@+id/loginUser" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/loginUser"
+        android:hint="@string/loginUser"
+        android:layout_marginTop="26dp"
+        android:layout_alignTop="@+id/activeMatchesList"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginButton"
+        android:id="@+id/loginButton"
+        android:onClick="login"
+        android:layout_below="@+id/loginShowPassword"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

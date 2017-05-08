@@ -29,7 +29,7 @@ public class CheckPositionReceiver extends BroadcastReceiver
     @Override
     public void onReceive (Context context, Intent intent)
     {
-        Log.d (TAG, "Received broadcast");
+        Log.e (TAG, "Received broadcast");
         String sessionKey = intent.getStringExtra (Tags.SESSION_KEY);
         String serverClueId = intent.getStringExtra (Tags.ID_IND);
         String positionUpdateStatus = intent.getStringExtra (Tags.STAGE_POSITION_UPDATE_STATUS);
@@ -59,9 +59,11 @@ public class CheckPositionReceiver extends BroadcastReceiver
                 case current_position_update_failed:
                     notificationText = context.getString (R.string.positionUpdateFailed);
                     break;
+
                 case current_position_confirmed:
                     notificationText = context.getString (R.string.correctPosition);
                     break;
+
                 case current_wrong_position:
                     notificationText = context.getString (R.string.wrongPosition);
                     break;

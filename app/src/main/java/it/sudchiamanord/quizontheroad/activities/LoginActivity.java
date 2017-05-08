@@ -97,6 +97,9 @@ public class LoginActivity extends GenericActivity<LoginOps>
         adapter.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
         mActiveMatchesSpinner = (Spinner) findViewById (R.id.activeMatchesList);
         mActiveMatchesSpinner.setAdapter (adapter);
+        if (spinnerLabels.size() > 2) {
+            mActiveMatchesSpinner.setSelection (1);
+        }
 
         super.onCreate (savedInstanceState, LoginOps.class);
     }

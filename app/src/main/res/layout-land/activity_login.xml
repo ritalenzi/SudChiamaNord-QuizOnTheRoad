@@ -8,15 +8,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".activities.LoginActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/logo"
-        android:layout_below="@+id/loginUser"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,18 +20,6 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/loginUser"
-        android:hint="@string/loginUser"
-        android:layout_marginTop="11dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/loginPassword"
@@ -48,17 +27,6 @@
         android:layout_below="@+id/loginUser"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginShowPassword"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="31dp"
-        android:id="@+id/activeMatchesList"
-        android:layout_alignLeft="@+id/loginShowPassword"
-        android:layout_alignStart="@+id/loginShowPassword" />
 
     <Button
         android:layout_width="wrap_content"
@@ -72,5 +40,37 @@
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/spinner"
         android:layout_alignStart="@+id/spinner" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/loginUser"
+        android:hint="@string/loginUser"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:id="@+id/activeMatchesList"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/loginUser"
+        android:layout_alignStart="@+id/loginUser" />
 
 </RelativeLayout>
