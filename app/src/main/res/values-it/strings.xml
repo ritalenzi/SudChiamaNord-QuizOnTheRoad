@@ -151,11 +151,13 @@
 
     <string name="playButton">Play</string>
     <string name="stopButton">Stop</string>
+    <string name="title_activity_logout">LogoutActivity</string>
 
     <string name="logoutDialogTitle">Aspetta</string>
     <string name="logoutDialogExpl">Logout in corso…</string>
     <string name="successfulLogout">Logout riuscito</string>
     <string name="failedLogout">Impossibile effettuare il logout</string>
+    <string name="title_activity_main">MainActivity</string>
     <string name="quiz_on_the_road">Quiz On The Road</string>
 
 </resources>

@@ -38,8 +38,8 @@
         android:layout_marginLeft="59dp"
         android:layout_marginStart="59dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/spinner"
-        android:layout_alignStart="@+id/spinner" />
+        android:layout_alignLeft="@+id/activeMatchesList"
+        android:layout_alignStart="@+id/activeMatchesList" />
 
     <ImageView
         android:layout_width="wrap_content"
